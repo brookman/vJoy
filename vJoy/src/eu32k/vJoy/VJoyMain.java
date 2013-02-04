@@ -46,7 +46,7 @@ public class VJoyMain extends App2D {
       architectStage = new ArchitectStage();
       screenStage = new ScreenStage();
 
-      changeStage(mainMenuStage);
+      changeStage(architectStage);
    }
 
    public void createController(String name, BroadcastAddress address) {
