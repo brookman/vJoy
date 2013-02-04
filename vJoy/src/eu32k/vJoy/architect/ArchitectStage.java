@@ -113,6 +113,9 @@ public class ArchitectStage extends Stage implements NetworkListener, Serializab
                   }
                }
                workset.getInstances().remove(selectedInstance);
+               if (workset.getExitInstance() == selectedInstance) {
+                  workset.setExitInstance(null);
+               }
                selectedInstance = null;
             }
             return false;
