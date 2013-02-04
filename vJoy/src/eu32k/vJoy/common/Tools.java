@@ -10,7 +10,7 @@ import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 
 public class Tools {
 
-   public static final int RESOLUTION = 512;
+   public static int RESOLUTION = 512;
 
    private static HashMap<String, AdvancedShader> map = new HashMap<String, AdvancedShader>();
 

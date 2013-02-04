@@ -1,5 +1,7 @@
 package eu32k.vJoy;
 
+import java.awt.Toolkit;
+
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 
@@ -11,15 +13,15 @@ public class Main {
       LwjglApplicationConfiguration cfg = new LwjglApplicationConfiguration();
       cfg.title = "vJoy";
       cfg.useGL20 = true;
-      cfg.width = 1800;
-      cfg.height = 1000;
+      cfg.width = Toolkit.getDefaultToolkit().getScreenSize().width - 100;
+      cfg.height = Toolkit.getDefaultToolkit().getScreenSize().height - 100;
       cfg.useCPUSynch = true;
       cfg.samples = 16;
       cfg.useGL20 = true;
       cfg.vSyncEnabled = true;
       cfg.fullscreen = false;
 
-      VJoyMain vjoy1 = new VJoyMain();
+      VJoyMain vjoy1 = new VJoyMain(Toolkit.getDefaultToolkit().getScreenSize().height - 100);
       // VJoyMain vjoy2 = new VJoyMain();
       //
       // LwjglAWTCanvas canvas1 = new LwjglAWTCanvas(vjoy1, true);

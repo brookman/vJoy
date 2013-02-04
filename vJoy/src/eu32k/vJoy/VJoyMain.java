@@ -12,6 +12,7 @@ import eu32k.common.net.BroadcastAddress;
 import eu32k.common.net.NetworkModule;
 import eu32k.common.net.NetworkSettings;
 import eu32k.vJoy.architect.ArchitectStage;
+import eu32k.vJoy.common.Tools;
 import eu32k.vJoy.controller.ControllerStage;
 import eu32k.vJoy.debug.DebugStage;
 import eu32k.vJoy.screen.ScreenStage;
@@ -27,6 +28,13 @@ public class VJoyMain extends App2D {
    private Stage architectStage;
    private Stage screenStage;
    private Stage debugStage;
+
+   public VJoyMain() {
+   }
+
+   public VJoyMain(int size) {
+      Tools.RESOLUTION = size;
+   }
 
    @Override
    public void create() {
