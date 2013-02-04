@@ -1,4 +1,4 @@
 vJoy
 ====
 
-A cross-platform visual jamming software
+vJoy is a cross-platform visual jamming software.
