@@ -276,6 +276,9 @@ public class ArchitectStage extends Stage implements NetworkListener, Serializab
       if (this.selectedInstance != selectedInstance) {
          if (selectedPort != null) {
             if (selectedInstance.getType().getDataType() == selectedPort.getDataType()) {
+               if (createsLoop(this.selectedInstance, selectedInstance)) {
+                  return;
+               }
                this.selectedInstance.getPortMapping().put(selectedPort, selectedInstance);
                selectedPort = null;
             }
@@ -283,6 +286,22 @@ public class ArchitectStage extends Stage implements NetworkListener, Serializab
          }
       }
       this.selectedInstance = selectedInstance;
+   }
+
+   private boolean createsLoop(Instance from, Instance to) {
+      for (Port port : to.getType().getPorts()) {
+         Instance instance = to.getPortMapping().get(port);
+         if (instance == null) {
+            continue;
+         }
+         if (instance == from) {
+            return true;
+         }
+         if (createsLoop(from, instance)) {
+            return true;
+         }
+      }
+      return false;
    }
 
    public Port getSelectedPort() {
