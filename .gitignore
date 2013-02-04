@@ -2,3 +2,5 @@
 *.class
 libgdx-nightly-latest.zip
 vJoy-desktop/bin
+vJoy-android/bin
+vJoy-android/gen
