@@ -34,13 +34,13 @@ public class MainMenuStage extends Stage {
       final TextField deviceName = new TextField("Device", VJoyMain.SKIN);
       deviceName.setColor(Colors.DARK_YELLOW);
 
-      TextButton controllerButton = new TextButton("Controller", VJoyMain.SKIN);
+      TextButton controllerButton = new TextButton("Controller [disabled]", VJoyMain.SKIN);
       controllerButton.setColor(Colors.DARK_YELLOW);
       TextButton architectButton = new TextButton("Architect", VJoyMain.SKIN);
       architectButton.setColor(Colors.DARK_YELLOW);
-      TextButton screenButton = new TextButton("Screen", VJoyMain.SKIN);
+      TextButton screenButton = new TextButton("Screen [disabled]", VJoyMain.SKIN);
       screenButton.setColor(Colors.DARK_YELLOW);
-      TextButton debugButton = new TextButton("Debug", VJoyMain.SKIN);
+      TextButton debugButton = new TextButton("Debug [disabled]", VJoyMain.SKIN);
       debugButton.setColor(Colors.DARK_YELLOW);
 
       Table table = new Table();
@@ -87,7 +87,7 @@ public class MainMenuStage extends Stage {
             // MainMenuStage.vJoy.createScreen(deviceName.getText(),
             // (BroadcastAddress)
             // addresses[broadcastSelection.getSelectionIndex()]);
-            MainMenuStage.this.vJoy.showScreen();
+            // MainMenuStage.this.vJoy.showScreen();
             return false;
          }
       });
