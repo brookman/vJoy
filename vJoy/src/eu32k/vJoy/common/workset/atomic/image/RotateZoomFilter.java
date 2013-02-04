@@ -18,7 +18,7 @@ public class RotateZoomFilter extends ImageType {
    private NumberPort zoom = addPort(new NumberPort("Zoom"));
 
    public RotateZoomFilter() {
-      super("Rotate/Zoom Filter");
+      super("Rotate / Zoom Filter");
    }
 
    @Override
