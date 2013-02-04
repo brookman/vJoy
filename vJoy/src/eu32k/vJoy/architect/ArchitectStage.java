@@ -155,9 +155,6 @@ public class ArchitectStage extends Stage implements NetworkListener, Serializab
       table.row();
       table.add();
       table.add(setExitButton).fill().pad(3);
-      table.row();
-      table.add();
-      table.add(screenButton).fill().pad(3);
 
       addActor(table);
 
