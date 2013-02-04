@@ -1,3 +1,4 @@
 # gitignore file for vJoy
 *.class
 libgdx-nightly-latest.zip
+vJoy-desktop/bin
