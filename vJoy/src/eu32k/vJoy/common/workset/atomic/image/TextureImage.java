@@ -11,7 +11,7 @@ public class TextureImage extends ImageType {
    private static final long serialVersionUID = 2517352030698538471L;
 
    public static enum TextureType {
-      FOREST("forest000"), DESERT("desert000"), TREE("tree000");
+      VJOY("vJoy"), FOREST("forest000"), DESERT("desert000"), TREE("tree000");
 
       private Texture texture;
 

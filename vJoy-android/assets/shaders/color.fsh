@@ -8,9 +8,10 @@
 uniform float uRed;
 uniform float uGreen;
 uniform float uBlue;
+uniform float uAlpha;
 varying vec2 vTextureCoord;
 
 void main(void) {
-	gl_FragColor = vec4(uRed, uGreen, uBlue, 1.0);
+	gl_FragColor = vec4(uRed, uGreen, uBlue, uAlpha);
 	
 }
