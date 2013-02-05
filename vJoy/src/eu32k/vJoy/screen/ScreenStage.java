@@ -37,12 +37,6 @@ public class ScreenStage extends Stage implements NetworkListener {
 
    @Override
    public void draw() {
-      // super.draw();
-
-      // Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT |
-      // (Gdx.graphics.getBufferFormat().coverageSampling ?
-      // GL20.GL_COVERAGE_BUFFER_BIT_NV : 0));
-      // Gdx.gl.glEnable(GL20.GL_ALPHA);
 
       Instance exit = Workset.getInstance().getExitInstance();
       if (exit != null && ((ImageInstance) exit).getValue() != null) {
@@ -57,10 +51,6 @@ public class ScreenStage extends Stage implements NetworkListener {
       shader.begin();
       shader.renderToScreeQuad(new Vector2(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
       shader.end();
-
-      // if (Gdx.input.isButtonPressed(Buttons.RIGHT)) {
-      // MainMenuStage.vJoy.changeStage(VJoyMain.architectStage);
-      // }
 
       // renderCount++;
    }
