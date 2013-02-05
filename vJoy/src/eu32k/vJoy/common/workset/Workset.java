@@ -20,6 +20,7 @@ import eu32k.vJoy.common.workset.atomic.image.GenShader;
 import eu32k.vJoy.common.workset.atomic.image.HSVFilter;
 import eu32k.vJoy.common.workset.atomic.image.RotateZoomFilter;
 import eu32k.vJoy.common.workset.atomic.image.SimpleMixer;
+import eu32k.vJoy.common.workset.atomic.image.StackImages;
 import eu32k.vJoy.common.workset.atomic.image.TextureImage;
 import eu32k.vJoy.common.workset.atomic.number.Add;
 import eu32k.vJoy.common.workset.atomic.number.ContTimer;
@@ -83,6 +84,7 @@ public class Workset implements Serializable {
       RotateZoomFilter rotateZoomFilter = new RotateZoomFilter();
       SimpleMixer simpleMixer = new SimpleMixer();
       AddImages addImages = new AddImages();
+      StackImages stackImages = new StackImages();
       AdvancedMixer advancedMixer = new AdvancedMixer();
 
       types.add(simpleNumber);
@@ -102,6 +104,7 @@ public class Workset implements Serializable {
       types.add(rotateZoomFilter);
       types.add(simpleMixer);
       types.add(addImages);
+      types.add(stackImages);
       types.add(advancedMixer);
 
       numberTypes.add(simpleNumber);
@@ -122,6 +125,7 @@ public class Workset implements Serializable {
       imageTypes.add(rotateZoomFilter);
       imageTypes.add(simpleMixer);
       imageTypes.add(addImages);
+      imageTypes.add(stackImages);
       imageTypes.add(advancedMixer);
 
       True trueType = new True();
