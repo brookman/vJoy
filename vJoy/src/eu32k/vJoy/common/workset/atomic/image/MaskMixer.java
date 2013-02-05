@@ -9,15 +9,15 @@ import eu32k.vJoy.common.workset.ImagePort;
 import eu32k.vJoy.common.workset.atomic.ImageInstance;
 import eu32k.vJoy.common.workset.atomic.ImageType;
 
-public class AdvancedMixer extends ImageType {
+public class MaskMixer extends ImageType {
    private static final long serialVersionUID = 5513833461098942443L;
 
    private ImagePort imageA = addPort(new ImagePort("Image A"));
    private ImagePort imageB = addPort(new ImagePort("Image B"));
    private ImagePort mask = addPort(new ImagePort("Mask"));
 
-   public AdvancedMixer() {
-      super("Advanced Mixer");
+   public MaskMixer() {
+      super("Mask Mixer");
    }
 
    @Override

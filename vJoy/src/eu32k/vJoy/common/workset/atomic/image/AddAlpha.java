@@ -9,14 +9,14 @@ import eu32k.vJoy.common.workset.ImagePort;
 import eu32k.vJoy.common.workset.atomic.ImageInstance;
 import eu32k.vJoy.common.workset.atomic.ImageType;
 
-public class StackImages extends ImageType {
+public class AddAlpha extends ImageType {
    private static final long serialVersionUID = 3158225809114249888L;
 
    private ImagePort imageA = addPort(new ImagePort("Image A"));
    private ImagePort imageB = addPort(new ImagePort("Image B"));
 
-   public StackImages() {
-      super("Stack");
+   public AddAlpha() {
+      super("Add Alpha");
    }
 
    @Override

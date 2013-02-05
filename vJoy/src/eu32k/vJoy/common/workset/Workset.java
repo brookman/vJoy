@@ -12,7 +12,7 @@ import eu32k.vJoy.common.workset.atomic.bool.Threshold;
 import eu32k.vJoy.common.workset.atomic.bool.True;
 import eu32k.vJoy.common.workset.atomic.bool.Xor;
 import eu32k.vJoy.common.workset.atomic.image.AddImages;
-import eu32k.vJoy.common.workset.atomic.image.AdvancedMixer;
+import eu32k.vJoy.common.workset.atomic.image.MaskMixer;
 import eu32k.vJoy.common.workset.atomic.image.BlackAndWhiteFilter;
 import eu32k.vJoy.common.workset.atomic.image.ColorShader;
 import eu32k.vJoy.common.workset.atomic.image.Filter;
@@ -20,7 +20,7 @@ import eu32k.vJoy.common.workset.atomic.image.GenShader;
 import eu32k.vJoy.common.workset.atomic.image.HSVFilter;
 import eu32k.vJoy.common.workset.atomic.image.RotateZoomFilter;
 import eu32k.vJoy.common.workset.atomic.image.SimpleMixer;
-import eu32k.vJoy.common.workset.atomic.image.StackImages;
+import eu32k.vJoy.common.workset.atomic.image.AddAlpha;
 import eu32k.vJoy.common.workset.atomic.image.TextureImage;
 import eu32k.vJoy.common.workset.atomic.number.Add;
 import eu32k.vJoy.common.workset.atomic.number.ContTimer;
@@ -84,8 +84,8 @@ public class Workset implements Serializable {
       RotateZoomFilter rotateZoomFilter = new RotateZoomFilter();
       SimpleMixer simpleMixer = new SimpleMixer();
       AddImages addImages = new AddImages();
-      StackImages stackImages = new StackImages();
-      AdvancedMixer advancedMixer = new AdvancedMixer();
+      AddAlpha stackImages = new AddAlpha();
+      MaskMixer advancedMixer = new MaskMixer();
 
       types.add(simpleNumber);
       types.add(add);
