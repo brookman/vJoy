@@ -1,9 +1,8 @@
 package eu32k.vJoy.common.workset.atomic.image;
 
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.Texture.TextureFilter;
-import com.badlogic.gdx.graphics.Texture.TextureWrap;
 
+import eu32k.vJoy.common.Tools;
 import eu32k.vJoy.common.workset.atomic.ImageInstance;
 import eu32k.vJoy.common.workset.atomic.ImageType;
 
@@ -16,9 +15,7 @@ public class TextureImage extends ImageType {
       private Texture texture;
 
       private TextureType(String texturePath) {
-         texture = new Texture("textures/" + texturePath + ".png");
-         texture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
-         texture.setWrap(TextureWrap.Repeat, TextureWrap.Repeat);
+         texture = Tools.getTextrue(texturePath);
       }
 
       public Texture getTexture() {

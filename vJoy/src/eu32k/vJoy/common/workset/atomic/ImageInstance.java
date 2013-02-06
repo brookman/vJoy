@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 
 import eu32k.vJoy.common.Tools;
 import eu32k.vJoy.common.workset.Instance;
+import eu32k.vJoy.screen.ScreenStage;
 
 public abstract class ImageInstance extends Instance {
    private static final long serialVersionUID = 5081927975759923189L;
@@ -18,10 +19,10 @@ public abstract class ImageInstance extends Instance {
    }
 
    public void render() {
-      // if (ScreenStage.renderCount != lastRenderCount) {
-      renderInternally();
-      // lastRenderCount = ScreenStage.renderCount;
-      // }
+      if (ScreenStage.renderCount != lastRenderCount) {
+         renderInternally();
+         lastRenderCount = ScreenStage.renderCount;
+      }
    }
 
    public abstract void renderInternally();
