@@ -122,7 +122,7 @@ public class ArchitectStage extends Stage implements NetworkListener, Serializab
          }
       });
 
-      TextButton setExitButton = new TextButton("Set as exit", VJoyMain.SKIN);
+      TextButton setExitButton = new TextButton("Set as exit ", VJoyMain.SKIN);
       setExitButton.setColor(Colors.DARK_YELLOW);
       setExitButton.addListener(new InputListener() {
          @Override
@@ -144,20 +144,52 @@ public class ArchitectStage extends Stage implements NetworkListener, Serializab
          }
       });
 
-      table.add(booleanSelectionBox).fill().expandX().pad(3);
-      table.add(booleanAddButtion).fill().pad(3);
+      TextButton exitButton = new TextButton("Exit", VJoyMain.SKIN);
+      exitButton.setColor(Colors.DARK_YELLOW);
+      exitButton.addListener(new InputListener() {
+         @Override
+         public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+            Gdx.app.exit();
+            return false;
+         }
+      });
+
+      TextButton clearButton = new TextButton("Clear all ", VJoyMain.SKIN);
+      clearButton.setColor(Colors.DARK_YELLOW);
+      clearButton.addListener(new InputListener() {
+         @Override
+         public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+            workset.setExitInstance(null);
+            workset.getInstances().clear();
+            return false;
+         }
+      });
+
+      int padding = 4;
+
+      table.add(exitButton).fill().pad(padding);
+      table.add(booleanSelectionBox).fill().expandX().pad(padding);
+      table.add(booleanAddButtion).fill().pad(padding);
       table.row();
-      table.add(numberSelectionBox).fill().expandX().pad(3);
-      table.add(numberAddButtion).fill().pad(3);
-      table.row();
-      table.add(imageSelectionBox).fill().expandX().pad(3);
-      table.add(imageAddButtion).fill().pad(3);
-      table.row();
+
       table.add();
-      table.add(deleteButton).fill().pad(3);
+      table.add(numberSelectionBox).fill().expandX().pad(padding);
+      table.add(numberAddButtion).fill().pad(padding);
       table.row();
+
+      table.add(clearButton).fill().pad(padding);
+      table.add(imageSelectionBox).fill().expandX().pad(padding);
+      table.add(imageAddButtion).fill().pad(padding);
+      table.row();
+
       table.add();
-      table.add(setExitButton).fill().pad(3);
+      table.add();
+      table.add(deleteButton).fill().pad(padding);
+      table.row();
+
+      table.add();
+      table.add();
+      table.add(setExitButton).fill().pad(padding);
 
       addActor(table);
 

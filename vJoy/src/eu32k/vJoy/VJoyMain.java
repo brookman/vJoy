@@ -125,7 +125,6 @@ public class VJoyMain extends App2D {
 
    @Override
    public void dispose() {
-      currentStage.dispose();
    }
 
    @Override
