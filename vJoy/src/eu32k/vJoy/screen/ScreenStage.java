@@ -3,7 +3,6 @@ package eu32k.vJoy.screen;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 
@@ -14,22 +13,27 @@ import eu32k.vJoy.common.Tools;
 import eu32k.vJoy.common.workset.Instance;
 import eu32k.vJoy.common.workset.Workset;
 import eu32k.vJoy.common.workset.atomic.ImageInstance;
+import eu32k.vJoy.common.workset.atomic.image.GenShader;
+import eu32k.vJoy.common.workset.atomic.image.GenShader.ShaderType;
+import eu32k.vJoy.common.workset.atomic.image.TextureImage;
+import eu32k.vJoy.common.workset.atomic.image.TextureImage.TextureType;
 
 public class ScreenStage extends Stage implements NetworkListener {
 
    // private NetworkModule net;
 
    private AdvancedShader shader;
-   public static Texture tex1;
+   public static Texture DEFAULT_TEXTURE;
 
-   // public static long renderCount = 0;
+   public static long renderCount = 0;
 
    public ScreenStage(/* NetworkModule net */) {
       // this.net = net;
-      tex1 = new Texture("textures/vJoy.png");
-      tex1.setFilter(TextureFilter.Linear, TextureFilter.Linear);
+      DEFAULT_TEXTURE = Tools.getTextrue("vJoy");
 
       shader = Tools.getShader("quarter", "simple");
+      TextureType t1 = TextureImage.TextureType.VJOY;
+      ShaderType t2 = GenShader.ShaderType.DEBUG;
 
       // net.addNetworkListener(this);
       // net.start();
@@ -45,14 +49,14 @@ public class ScreenStage extends Stage implements NetworkListener {
          ((ImageInstance) exit).getValue().bind();
       } else {
          Gdx.gl.glActiveTexture(GL20.GL_TEXTURE0);
-         tex1.bind();
+         DEFAULT_TEXTURE.bind();
       }
 
       shader.begin();
       shader.renderToScreeQuad(new Vector2(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
       shader.end();
 
-      // renderCount++;
+      renderCount++;
    }
 
    @Override

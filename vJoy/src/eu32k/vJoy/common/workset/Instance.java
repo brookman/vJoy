@@ -77,7 +77,7 @@ public class Instance implements Serializable {
          ImageInstance imageInstance = (ImageInstance) instance;
          return imageInstance.getValue();
       }
-      return ScreenStage.tex1;
+      return ScreenStage.DEFAULT_TEXTURE;
    }
 
    public void renderPort(ImagePort port) {
