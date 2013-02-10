@@ -11,16 +11,17 @@ import eu32k.vJoy.common.workset.atomic.bool.Or;
 import eu32k.vJoy.common.workset.atomic.bool.Threshold;
 import eu32k.vJoy.common.workset.atomic.bool.True;
 import eu32k.vJoy.common.workset.atomic.bool.Xor;
+import eu32k.vJoy.common.workset.atomic.image.AddAlpha;
 import eu32k.vJoy.common.workset.atomic.image.AddImages;
-import eu32k.vJoy.common.workset.atomic.image.MaskMixer;
 import eu32k.vJoy.common.workset.atomic.image.BlackAndWhiteFilter;
 import eu32k.vJoy.common.workset.atomic.image.ColorShader;
 import eu32k.vJoy.common.workset.atomic.image.Filter;
 import eu32k.vJoy.common.workset.atomic.image.GenShader;
 import eu32k.vJoy.common.workset.atomic.image.HSVFilter;
+import eu32k.vJoy.common.workset.atomic.image.Lazer;
+import eu32k.vJoy.common.workset.atomic.image.MaskMixer;
 import eu32k.vJoy.common.workset.atomic.image.RotateZoomFilter;
 import eu32k.vJoy.common.workset.atomic.image.SimpleMixer;
-import eu32k.vJoy.common.workset.atomic.image.AddAlpha;
 import eu32k.vJoy.common.workset.atomic.image.TextureImage;
 import eu32k.vJoy.common.workset.atomic.number.Add;
 import eu32k.vJoy.common.workset.atomic.number.ContTimer;
@@ -86,6 +87,7 @@ public class Workset implements Serializable {
       AddImages addImages = new AddImages();
       AddAlpha stackImages = new AddAlpha();
       MaskMixer advancedMixer = new MaskMixer();
+      Lazer lazer = new Lazer();
 
       types.add(simpleNumber);
       types.add(add);
@@ -106,6 +108,7 @@ public class Workset implements Serializable {
       types.add(addImages);
       types.add(stackImages);
       types.add(advancedMixer);
+      types.add(lazer);
 
       numberTypes.add(simpleNumber);
       numberTypes.add(add);
@@ -127,6 +130,7 @@ public class Workset implements Serializable {
       imageTypes.add(addImages);
       imageTypes.add(stackImages);
       imageTypes.add(advancedMixer);
+      imageTypes.add(lazer);
 
       True trueType = new True();
       False falseType = new False();
