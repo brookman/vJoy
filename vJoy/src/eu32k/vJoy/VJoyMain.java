@@ -1,20 +1,13 @@
 package eu32k.vJoy;
 
-import java.io.IOException;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
-import eu32k.common.net.BroadcastAddress;
-import eu32k.common.net.NetworkModule;
-import eu32k.common.net.NetworkSettings;
 import eu32k.vJoy.architect.ArchitectStage;
 import eu32k.vJoy.common.Tools;
-import eu32k.vJoy.controller.ControllerStage;
-import eu32k.vJoy.debug.DebugStage;
 import eu32k.vJoy.screen.ScreenStage;
 
 public class VJoyMain extends App2D {
@@ -38,8 +31,6 @@ public class VJoyMain extends App2D {
 
    @Override
    public void create() {
-      NetworkSettings.compressData = false;
-      NetworkSettings.setMagicWord("vJoy-packet|");
       SKIN = new Skin(Gdx.files.internal("data/uiskin.json"));
 
       mainMenuStage = new MainMenuStage(this);
@@ -49,13 +40,14 @@ public class VJoyMain extends App2D {
       changeStage(architectStage);
    }
 
-   public void createController(String name, BroadcastAddress address) {
-      try {
-         NetworkModule net = new NetworkModule(name, ClientTypes.TYPE_CONTROLLER, address);
-         changeStage(new ControllerStage(net));
-      } catch (IOException e) {
-      }
-   }
+   // public void createController(String name, BroadcastAddress address) {
+   // try {
+   // NetworkModule net = new NetworkModule(name, ClientTypes.TYPE_CONTROLLER,
+   // address);
+   // changeStage(new ControllerStage(net));
+   // } catch (IOException e) {
+   // }
+   // }
 
    // public void createArchitect(String name, BroadcastAddress address) {
    // try {
@@ -76,13 +68,14 @@ public class VJoyMain extends App2D {
    // }
    // }
 
-   public void createDebug(String name, BroadcastAddress address) {
-      try {
-         NetworkModule net = new NetworkModule(name + " (DEBUG)", ClientTypes.TYPE_DEBUG, address);
-         changeStage(new DebugStage(net));
-      } catch (IOException e) {
-      }
-   }
+   // public void createDebug(String name, BroadcastAddress address) {
+   // try {
+   // NetworkModule net = new NetworkModule(name + " (DEBUG)",
+   // ClientTypes.TYPE_DEBUG, address);
+   // changeStage(new DebugStage(net));
+   // } catch (IOException e) {
+   // }
+   // }
 
    private void changeStage(Stage stage) {
       Gdx.input.setInputProcessor(stage);

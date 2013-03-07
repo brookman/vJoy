@@ -9,22 +9,16 @@ import com.badlogic.gdx.scenes.scene2d.ui.Slider;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 
-import eu32k.common.net.NetworkListener;
-import eu32k.common.net.NetworkModule;
-import eu32k.common.net.Packet;
-import eu32k.common.net.Serializer;
 import eu32k.vJoy.VJoyMain;
 import eu32k.vJoy.common.Colors;
 
-public class ControllerStage extends Stage implements NetworkListener {
+public class ControllerStage extends Stage {
 
-   private NetworkModule net;
    private List<Slider> sliders = new ArrayList<Slider>();
 
    private boolean internal = false;
 
-   public ControllerStage(NetworkModule net) {
-      this.net = net;
+   public ControllerStage() {
 
       for (int i = 0; i < 7; i++) {
          final Slider slider = new Slider(0, 2000, 1, false, VJoyMain.SKIN);
@@ -41,7 +35,7 @@ public class ControllerStage extends Stage implements NetworkListener {
                SliderUpdate update = new SliderUpdate();
                update.id = id;
                update.value = slider.getValue();
-               ControllerStage.this.net.broadcast(update);
+               // ControllerStage.this.net.broadcast(update);
             }
          });
          sliders.add(slider);
@@ -55,33 +49,32 @@ public class ControllerStage extends Stage implements NetworkListener {
       }
       addActor(table);
 
-      net.addNetworkListener(this);
-      net.start();
    }
 
-   @Override
-   public void packetReceived(Packet packet) {
-      if (packet.getPayload() == null) {
-         return;
-      }
-
-      Object payload = null;
-      try {
-         payload = Serializer.deserialize(packet.getPayload());
-      } catch (Exception e1) {
-         // NOP
-      }
-
-      if (payload == null) {
-         return;
-      }
-
-      if (packet.getName().equals(net.getPacket().getName()) && payload instanceof SliderUpdate) {
-         SliderUpdate update = (SliderUpdate) payload;
-         // if (update.value != slider0.getValue()) {
-         internal = true;
-         sliders.get(update.id).setValue(update.value);
-         // }
-      }
-   }
+   // @Override
+   // public void packetReceived(Packet packet) {
+   // if (packet.getPayload() == null) {
+   // return;
+   // }
+   //
+   // Object payload = null;
+   // try {
+   // payload = Serializer.deserialize(packet.getPayload());
+   // } catch (Exception e1) {
+   // // NOP
+   // }
+   //
+   // if (payload == null) {
+   // return;
+   // }
+   //
+   // if (packet.getName().equals(net.getPacket().getName()) && payload
+   // instanceof SliderUpdate) {
+   // SliderUpdate update = (SliderUpdate) payload;
+   // // if (update.value != slider0.getValue()) {
+   // internal = true;
+   // sliders.get(update.id).setValue(update.value);
+   // // }
+   // }
+   // }
 }

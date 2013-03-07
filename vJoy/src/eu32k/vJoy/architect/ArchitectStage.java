@@ -14,8 +14,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.SelectBox;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 
-import eu32k.common.net.NetworkListener;
-import eu32k.common.net.Packet;
 import eu32k.vJoy.VJoyMain;
 import eu32k.vJoy.common.Colors;
 import eu32k.vJoy.common.workset.DataType;
@@ -24,7 +22,7 @@ import eu32k.vJoy.common.workset.Port;
 import eu32k.vJoy.common.workset.Type;
 import eu32k.vJoy.common.workset.Workset;
 
-public class ArchitectStage extends Stage implements NetworkListener, Serializable {
+public class ArchitectStage extends Stage implements Serializable {
    private static final long serialVersionUID = 4071133119506442487L;
 
    // private NetworkModule net;
@@ -274,31 +272,31 @@ public class ArchitectStage extends Stage implements NetworkListener, Serializab
       }
    }
 
-   @Override
-   public void packetReceived(Packet packet) {
-      // if (packet.getPayload() == null) {
-      // return;
-      // }
-      //
-      // Object payload = null;
-      // try {
-      // payload = Serializer.deserialize(packet.getPayload());
-      // } catch (Exception e1) {
-      // // NOP
-      // }
-      //
-      // if (payload == null) {
-      // return;
-      // }
-      //
-      // if (packet.getName().equals(net.getPacket().getName()) && payload
-      // instanceof Workset) {
-      // synchronized (lock) {
-      // workset = (Workset) payload;
-      // currentPatch = workset.mainPatch;
-      // }
-      // }
-   }
+   // @Override
+   // public void packetReceived(Packet packet) {
+   // // if (packet.getPayload() == null) {
+   // // return;
+   // // }
+   // //
+   // // Object payload = null;
+   // // try {
+   // // payload = Serializer.deserialize(packet.getPayload());
+   // // } catch (Exception e1) {
+   // // // NOP
+   // // }
+   // //
+   // // if (payload == null) {
+   // // return;
+   // // }
+   // //
+   // // if (packet.getName().equals(net.getPacket().getName()) && payload
+   // // instanceof Workset) {
+   // // synchronized (lock) {
+   // // workset = (Workset) payload;
+   // // currentPatch = workset.mainPatch;
+   // // }
+   // // }
+   // }
 
    public Instance getSelectedInstance() {
       return selectedInstance;
