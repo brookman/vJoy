@@ -24,5 +24,4 @@ public enum DataType implements Serializable {
    public Color getSelectedColor() {
       return selected;
    }
-
 }
