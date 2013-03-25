@@ -11,19 +11,22 @@ import eu32k.vJoy.common.workset.atomic.bool.Or;
 import eu32k.vJoy.common.workset.atomic.bool.Threshold;
 import eu32k.vJoy.common.workset.atomic.bool.True;
 import eu32k.vJoy.common.workset.atomic.bool.Xor;
+import eu32k.vJoy.common.workset.atomic.image.AddAlpha;
 import eu32k.vJoy.common.workset.atomic.image.AddImages;
-import eu32k.vJoy.common.workset.atomic.image.MaskMixer;
+import eu32k.vJoy.common.workset.atomic.image.Animation;
 import eu32k.vJoy.common.workset.atomic.image.BlackAndWhiteFilter;
 import eu32k.vJoy.common.workset.atomic.image.ColorShader;
 import eu32k.vJoy.common.workset.atomic.image.Filter;
 import eu32k.vJoy.common.workset.atomic.image.GenShader;
 import eu32k.vJoy.common.workset.atomic.image.HSVFilter;
+import eu32k.vJoy.common.workset.atomic.image.Lazer;
+import eu32k.vJoy.common.workset.atomic.image.MaskMixer;
 import eu32k.vJoy.common.workset.atomic.image.RotateZoomFilter;
 import eu32k.vJoy.common.workset.atomic.image.SimpleMixer;
-import eu32k.vJoy.common.workset.atomic.image.AddAlpha;
 import eu32k.vJoy.common.workset.atomic.image.TextureImage;
 import eu32k.vJoy.common.workset.atomic.number.Add;
 import eu32k.vJoy.common.workset.atomic.number.ContTimer;
+import eu32k.vJoy.common.workset.atomic.number.MidiNumber;
 import eu32k.vJoy.common.workset.atomic.number.Multiply;
 import eu32k.vJoy.common.workset.atomic.number.Random;
 import eu32k.vJoy.common.workset.atomic.number.SimpleFunction;
@@ -68,6 +71,7 @@ public class Workset implements Serializable {
    private Workset() {
 
       SimpleNumber simpleNumber = new SimpleNumber();
+      MidiNumber midiNumber = new MidiNumber();
       Add add = new Add();
       Multiply multiply = new Multiply();
       Random random = new Random();
@@ -76,6 +80,7 @@ public class Workset implements Serializable {
       TriTimer triTimer = new TriTimer();
       ContTimer contTimer = new ContTimer();
       TextureImage simpleImage = new TextureImage();
+      Animation animation = new Animation();
       GenShader eyeShader = new GenShader();
       ColorShader colorShader = new ColorShader();
       HSVFilter hsvFilter = new HSVFilter();
@@ -86,8 +91,10 @@ public class Workset implements Serializable {
       AddImages addImages = new AddImages();
       AddAlpha stackImages = new AddAlpha();
       MaskMixer advancedMixer = new MaskMixer();
+      Lazer lazer = new Lazer();
 
       types.add(simpleNumber);
+      types.add(midiNumber);
       types.add(add);
       types.add(multiply);
       types.add(random);
@@ -96,6 +103,7 @@ public class Workset implements Serializable {
       types.add(triTimer);
       types.add(contTimer);
       types.add(simpleImage);
+      types.add(animation);
       types.add(eyeShader);
       types.add(colorShader);
       types.add(hsvFilter);
@@ -106,8 +114,10 @@ public class Workset implements Serializable {
       types.add(addImages);
       types.add(stackImages);
       types.add(advancedMixer);
+      types.add(lazer);
 
       numberTypes.add(simpleNumber);
+      numberTypes.add(midiNumber);
       numberTypes.add(add);
       numberTypes.add(multiply);
       numberTypes.add(random);
@@ -117,6 +127,7 @@ public class Workset implements Serializable {
       numberTypes.add(contTimer);
 
       imageTypes.add(simpleImage);
+      imageTypes.add(animation);
       imageTypes.add(eyeShader);
       imageTypes.add(colorShader);
       imageTypes.add(hsvFilter);
@@ -127,6 +138,7 @@ public class Workset implements Serializable {
       imageTypes.add(addImages);
       imageTypes.add(stackImages);
       imageTypes.add(advancedMixer);
+      imageTypes.add(lazer);
 
       True trueType = new True();
       False falseType = new False();
@@ -154,6 +166,11 @@ public class Workset implements Serializable {
       booleanTypes.add(xor);
       booleanTypes.add(boolRandom);
       booleanTypes.add(threshold);
+
+      for (int i = 0; i < 17; i++) {
+         addInstance(midiNumber, 0, i * 44);
+      }
+
    }
 
    private Instance addInstance(Type type, float x, float y) {

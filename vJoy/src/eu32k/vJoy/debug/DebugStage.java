@@ -1,30 +1,22 @@
 package eu32k.vJoy.debug;
 
-import java.util.Map;
-
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.Align;
 
-import eu32k.common.net.Client;
-import eu32k.common.net.NetworkListener;
-import eu32k.common.net.NetworkModule;
-import eu32k.common.net.Packet;
-import eu32k.common.net.ThreadUtil;
 import eu32k.vJoy.VJoyMain;
 
-public class DebugStage extends Stage implements NetworkListener {
+public class DebugStage extends Stage {
 
-   private NetworkModule net;
+   // private NetworkModule net;
    private Label leftLabel;
    private Label rightLabel;
    private String log = "";
    private ScrollPane scrollPane;
 
-   public DebugStage(NetworkModule net) {
-      this.net = net;
+   public DebugStage() {
 
       leftLabel = new Label("Debug1", VJoyMain.SKIN);
       leftLabel.setWrap(true);
@@ -41,40 +33,40 @@ public class DebugStage extends Stage implements NetworkListener {
       table.add(scrollPane).fill().pad(20).expand();
       addActor(table);
 
-      net.addNetworkListener(this);
-      net.start();
-      ThreadUtil.startLoopThread(new Runnable() {
-         @Override
-         public void run() {
-            update();
-         }
-      }, 500);
+      // net.addNetworkListener(this);
+      // net.start();
+      // ThreadUtil.startLoopThread(new Runnable() {
+      // @Override
+      // public void run() {
+      // update();
+      // }
+      // }, 500);
    }
 
-   private void update() {
-      String newText = "";
-
-      newText += "Me: ";
-      newText += net.getPacket().getName() + " ";
-      newText += "(" + net.getPacket().getType() + ") ";
-      newText += net.getPacket().getId() + "\n";
-
-      Map<Long, Client> clients = net.getKnownClients();
-      synchronized (clients) {
-         for (Client client : clients.values()) {
-            newText += client.isActive() ? "" : "! ";
-            newText += client.getPacket().getName() + " ";
-            newText += "(" + client.getPacket().getType() + ") ";
-            newText += client.getAddress().getHostAddress() + " ";
-            newText += client.getPacket().getId() + "\n";
-         }
-      }
-      leftLabel.setText(newText);
-      rightLabel.setText(log);
-   }
-
-   @Override
-   public void packetReceived(Packet packet) {
-      log += packet.getName() + " " + packet.getId() + "\n";
-   }
+   // private void update() {
+   // String newText = "";
+   //
+   // newText += "Me: ";
+   // newText += net.getPacket().getName() + " ";
+   // newText += "(" + net.getPacket().getType() + ") ";
+   // newText += net.getPacket().getId() + "\n";
+   //
+   // Map<Long, Client> clients = net.getKnownClients();
+   // synchronized (clients) {
+   // for (Client client : clients.values()) {
+   // newText += client.isActive() ? "" : "! ";
+   // newText += client.getPacket().getName() + " ";
+   // newText += "(" + client.getPacket().getType() + ") ";
+   // newText += client.getAddress().getHostAddress() + " ";
+   // newText += client.getPacket().getId() + "\n";
+   // }
+   // }
+   // leftLabel.setText(newText);
+   // rightLabel.setText(log);
+   // }
+   //
+   // @Override
+   // public void packetReceived(Packet packet) {
+   // log += packet.getName() + " " + packet.getId() + "\n";
+   // }
 }

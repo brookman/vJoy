@@ -10,6 +10,8 @@ import eu32k.vJoy.screen.PrimitivesFactory;
 
 public class AdvancedShader extends ShaderProgram {
 
+   private boolean clear = true;
+
    public AdvancedShader(String vertexShader, String fragmentShader) {
       super(vertexShader, fragmentShader);
    }
@@ -33,8 +35,10 @@ public class AdvancedShader extends ShaderProgram {
 
       if (frameBuffer != null) {
          frameBuffer.begin();
-         Gdx.gl.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
+         if (clear) {
+            Gdx.gl.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+            Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
+         }
       }
       if (flip) {
          PrimitivesFactory.QUAD_FLIPPED.render(this, GL20.GL_TRIANGLE_FAN);
@@ -46,5 +50,13 @@ public class AdvancedShader extends ShaderProgram {
          frameBuffer.end();
       }
       end();
+   }
+
+   public boolean isClear() {
+      return clear;
+   }
+
+   public void setClear(boolean clear) {
+      this.clear = clear;
    }
 }

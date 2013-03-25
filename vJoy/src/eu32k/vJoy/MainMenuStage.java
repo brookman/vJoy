@@ -1,7 +1,5 @@
 package eu32k.vJoy;
 
-import java.net.SocketException;
-
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -11,7 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 
-import eu32k.common.net.NetworkModule;
+import eu32k.common.net.PeerToPeerClient;
 import eu32k.vJoy.common.Colors;
 
 public class MainMenuStage extends Stage {
@@ -23,11 +21,7 @@ public class MainMenuStage extends Stage {
    public MainMenuStage(VJoyMain vJoy) {
       this.vJoy = vJoy;
 
-      try {
-         addresses = NetworkModule.findBroadcastAddresses().toArray();
-      } catch (SocketException e1) {
-         // NOP
-      }
+      addresses = PeerToPeerClient.findBroadcastAddresses().toArray();
 
       final SelectBox broadcastSelection = new SelectBox(addresses, VJoyMain.SKIN);
       broadcastSelection.setColor(Colors.DARK_YELLOW);
