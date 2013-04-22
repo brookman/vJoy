@@ -1,6 +1,5 @@
 package eu32k.vJoy.architect;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -22,8 +21,7 @@ import eu32k.vJoy.common.workset.Port;
 import eu32k.vJoy.common.workset.Type;
 import eu32k.vJoy.common.workset.Workset;
 
-public class ArchitectStage extends Stage implements Serializable {
-   private static final long serialVersionUID = 4071133119506442487L;
+public class ArchitectStage extends Stage {
 
    // private NetworkModule net;
    private ShapeRenderer rend;
@@ -49,7 +47,7 @@ public class ArchitectStage extends Stage implements Serializable {
       booleanSelectionBox.setColor(Colors.DARK_YELLOW);
 
       TextButton booleanAddButtion = new TextButton("Add", VJoyMain.SKIN);
-      booleanAddButtion.setColor(DataType.BOOLEAN.getNormalColor());
+      booleanAddButtion.setColor(DataType.NORMAL_COLORS[DataType.BOOLEAN]);
 
       booleanAddButtion.addListener(new InputListener() {
          @Override
@@ -65,7 +63,7 @@ public class ArchitectStage extends Stage implements Serializable {
       numberSelectionBox.setColor(Colors.DARK_YELLOW);
 
       TextButton numberAddButtion = new TextButton("Add", VJoyMain.SKIN);
-      numberAddButtion.setColor(DataType.NUMBER.getNormalColor());
+      numberAddButtion.setColor(DataType.NORMAL_COLORS[DataType.NUMBER]);
 
       numberAddButtion.addListener(new InputListener() {
          @Override
@@ -81,7 +79,7 @@ public class ArchitectStage extends Stage implements Serializable {
       imageSelectionBox.setColor(Colors.DARK_YELLOW);
 
       TextButton imageAddButtion = new TextButton("Add", VJoyMain.SKIN);
-      imageAddButtion.setColor(DataType.IMAGE.getNormalColor());
+      imageAddButtion.setColor(DataType.NORMAL_COLORS[DataType.IMAGE]);
 
       imageAddButtion.addListener(new InputListener() {
          @Override
@@ -163,7 +161,7 @@ public class ArchitectStage extends Stage implements Serializable {
          }
       });
 
-      int padding = 4;
+      int padding = 6;
 
       table.add(exitButton).fill().pad(padding);
       table.add(booleanSelectionBox).fill().expandX().pad(padding);
@@ -248,7 +246,7 @@ public class ArchitectStage extends Stage implements Serializable {
             view1.update();
 
             for (Port port : subType.getPorts()) {
-               rend.setColor(port.getDataType().getNormalColor());
+               rend.setColor(DataType.NORMAL_COLORS[port.getDataType()]);
                Instance linkTo = instance.getPortMapping().get(port);
                if (linkTo != null) {
                   TypeView view2 = map.get(linkTo);
@@ -262,7 +260,7 @@ public class ArchitectStage extends Stage implements Serializable {
                }
             }
             if (instance == workset.getExitInstance()) {
-               rend.setColor(subType.getDataType().getNormalColor());
+               rend.setColor(DataType.NORMAL_COLORS[subType.getDataType()]);
                rend.line(view1.getConnectorX(), view1.getConnectorY(), Gdx.graphics.getWidth(), Gdx.graphics.getHeight() / 2);
             }
 

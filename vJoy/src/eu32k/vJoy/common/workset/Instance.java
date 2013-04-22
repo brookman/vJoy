@@ -8,16 +8,17 @@ import com.badlogic.gdx.graphics.Texture;
 import eu32k.vJoy.common.workset.atomic.BooleanInstance;
 import eu32k.vJoy.common.workset.atomic.ImageInstance;
 import eu32k.vJoy.common.workset.atomic.NumberInstance;
+import eu32k.vJoy.common.workset.group.Group;
 import eu32k.vJoy.screen.ScreenStage;
 
-public class Instance implements Serializable {
-   private static final long serialVersionUID = -3667425348135474848L;
+public class Instance {
 
    private Type type;
    private HashMap<Port, Instance> portMapping = new HashMap<Port, Instance>();
 
    private float x;
    private float y;
+   private Group group;
 
    public Instance(Type type, float x, float y) {
       setType(type);
@@ -47,6 +48,14 @@ public class Instance implements Serializable {
 
    public void setY(float y) {
       this.y = y;
+   }
+
+   public Group getGroup() {
+      return group;
+   }
+
+   public void setGroup(Group group) {
+      this.group = group;
    }
 
    public HashMap<Port, Instance> getPortMapping() {

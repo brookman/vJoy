@@ -2,22 +2,21 @@ package eu32k.vJoy.common.workset;
 
 import java.io.Serializable;
 
-public class Port implements Serializable {
-   private static final long serialVersionUID = 6274602646420185844L;
+public class Port {
 
    private String name;
-   private DataType dataType;
+   private int dataType;
 
-   public Port(String name, DataType dataType) {
+   public Port(String name, int dataType) {
       this.name = name;
       this.dataType = dataType;
    }
 
-   public DataType getDataType() {
+   public int getDataType() {
       return dataType;
    }
 
-   public void setDataType(DataType dataType) {
+   public void setDataType(int dataType) {
       this.dataType = dataType;
    }
 

@@ -90,9 +90,9 @@ public class TypeView extends Window {
 
    public void update() {
       if (stage.getSelectedInstance() != null && stage.getSelectedInstance() == instance) {
-         setColor(type.getDataType().getSelectedColor());
+         setColor(DataType.SELECTED_COLORS[type.getDataType()]);
       } else {
-         setColor(type.getDataType().getNormalColor());
+         setColor(DataType.NORMAL_COLORS[type.getDataType()]);
       }
 
       String titleString = type.getName();
@@ -136,7 +136,7 @@ public class TypeView extends Window {
             } else {
                slider.setTouchable(Touchable.disabled);
             }
-            slider.setColor(type.getDataType().getNormalColor());
+            slider.setColor(DataType.NORMAL_COLORS[type.getDataType()]);
          }
          if (!(type instanceof SimpleNumber)) {
             slider.setValue(MathUtils.clamp(((NumberInstance) instance).getValue(), 0.0f, 1.0f));
@@ -226,9 +226,9 @@ public class TypeView extends Window {
          }
 
          if (stage.getSelectedInstance() != null && stage.getSelectedInstance() == instance && stage.getSelectedPort() != null && stage.getSelectedPort() == port) {
-            label.setColor(port.getDataType().getSelectedColor());
+            label.setColor(DataType.SELECTED_COLORS[port.getDataType()]);
          } else {
-            label.setColor(port.getDataType().getNormalColor());
+            label.setColor(DataType.NORMAL_COLORS[port.getDataType()]);
          }
 
          add(label).left();

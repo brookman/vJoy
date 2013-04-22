@@ -3,6 +3,7 @@ package eu32k.vJoy.architect;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 
 import eu32k.vJoy.VJoyMain;
+import eu32k.vJoy.common.workset.DataType;
 import eu32k.vJoy.common.workset.Port;
 
 public class PortView extends Window {
@@ -17,7 +18,7 @@ public class PortView extends Window {
 
    public void update() {
       setTitle(port.getName());
-      setColor(port.getDataType().getNormalColor());
+      setColor(DataType.NORMAL_COLORS[port.getDataType()]);
       pack();
    }
 

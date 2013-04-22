@@ -4,14 +4,13 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class Type implements Serializable {
-   private static final long serialVersionUID = 1102616301156904960L;
+public abstract class Type {
 
    private String name;
-   private DataType dataType;
+   private int dataType;
    private List<Port> ports = new ArrayList<Port>();
 
-   public Type(String name, DataType dataType) {
+   public Type(String name, int dataType) {
       this.name = name;
       this.dataType = dataType;
    }
@@ -32,11 +31,11 @@ public abstract class Type implements Serializable {
       return new Instance(this, x, y);
    }
 
-   public DataType getDataType() {
+   public int getDataType() {
       return dataType;
    }
 
-   public void setDataType(DataType dataType) {
+   public void setDataType(int dataType) {
       this.dataType = dataType;
    }
 
