@@ -4,5 +4,6 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry exported="true" kind="lib" path="libs/gdx.jar" sourcepath="libs/gdx-sources.jar"/>
 	<classpathentry kind="lib" path="libs/midi.jar"/>
+	<classpathentry kind="lib" path="lib/json-io-2.0.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
