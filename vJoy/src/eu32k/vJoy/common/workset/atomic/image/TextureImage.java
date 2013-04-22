@@ -7,7 +7,6 @@ import eu32k.vJoy.common.workset.atomic.ImageInstance;
 import eu32k.vJoy.common.workset.atomic.ImageType;
 
 public class TextureImage extends ImageType {
-   private static final long serialVersionUID = 2517352030698538471L;
 
    public static enum TextureType {
       VJOY("vJoy"), FOREST("forest000"), DESERT("desert000"), TREE("tree000");
@@ -33,7 +32,6 @@ public class TextureImage extends ImageType {
    }
 
    public class TextureInstance extends ImageInstance {
-      private static final long serialVersionUID = -1206257568705784528L;
 
       public TextureType textureType = TextureType.FOREST;
 

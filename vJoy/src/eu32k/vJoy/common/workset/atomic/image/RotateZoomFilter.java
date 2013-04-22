@@ -11,7 +11,6 @@ import eu32k.vJoy.common.workset.atomic.ImageInstance;
 import eu32k.vJoy.common.workset.atomic.ImageType;
 
 public class RotateZoomFilter extends ImageType {
-   private static final long serialVersionUID = 4203549682307964834L;
 
    private ImagePort image = addPort(new ImagePort("Input"));
    private NumberPort rot = addPort(new NumberPort("Rotation"));
@@ -24,7 +23,6 @@ public class RotateZoomFilter extends ImageType {
    @Override
    public ImageInstance instanciate(float x, float y) {
       return new ImageInstance(this, x, y) {
-         private static final long serialVersionUID = 2339019018930598026L;
 
          private AdvancedShader shader = Tools.getShader("rotateZoom");
 

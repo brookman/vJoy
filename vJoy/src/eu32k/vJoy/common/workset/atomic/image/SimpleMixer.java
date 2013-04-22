@@ -11,7 +11,6 @@ import eu32k.vJoy.common.workset.atomic.ImageInstance;
 import eu32k.vJoy.common.workset.atomic.ImageType;
 
 public class SimpleMixer extends ImageType {
-   private static final long serialVersionUID = 5513833461098942443L;
 
    private ImagePort imageA = addPort(new ImagePort("Image A"));
    private ImagePort imageB = addPort(new ImagePort("Image B"));
@@ -24,7 +23,6 @@ public class SimpleMixer extends ImageType {
    @Override
    public ImageInstance instanciate(float x, float y) {
       return new ImageInstance(this, x, y) {
-         private static final long serialVersionUID = 2620469920518471027L;
 
          private AdvancedShader shader = Tools.getShader("mixer");
 

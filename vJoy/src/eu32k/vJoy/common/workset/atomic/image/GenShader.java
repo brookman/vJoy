@@ -6,7 +6,6 @@ import eu32k.vJoy.common.workset.atomic.ImageInstance;
 import eu32k.vJoy.common.workset.atomic.ImageType;
 
 public class GenShader extends ImageType {
-   private static final long serialVersionUID = -5919117551191986546L;
 
    public static enum ShaderType {
       DEBUG("debug"), CREATION("creation"), EYE("eye"), META_BLOB("metablob"), MONJORI("monjori"), NAUTILUS("nautilus"), PLASMA("plasma");
@@ -32,7 +31,6 @@ public class GenShader extends ImageType {
    }
 
    public class GenShaderInstance extends ImageInstance {
-      private static final long serialVersionUID = -7254226849996695361L;
 
       public ShaderType shaderType = ShaderType.EYE;
 

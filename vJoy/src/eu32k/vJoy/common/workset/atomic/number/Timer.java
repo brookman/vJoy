@@ -8,7 +8,6 @@ import eu32k.vJoy.common.workset.atomic.NumberInstance;
 import eu32k.vJoy.common.workset.atomic.NumberType;
 
 public class Timer extends NumberType {
-   private static final long serialVersionUID = -7956241978407245944L;
 
    private NumberPort speedPort = addPort(new NumberPort("Speed"));
 
@@ -19,7 +18,6 @@ public class Timer extends NumberType {
    @Override
    public NumberInstance instanciate(float x, float y) {
       return new NumberInstance(this, x, y) {
-         private static final long serialVersionUID = 2620469920518471027L;
 
          private float lastTime = Time.getTime();
          public float internalTime = 0.0f;

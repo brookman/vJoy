@@ -10,7 +10,6 @@ import eu32k.vJoy.common.workset.atomic.ImageInstance;
 import eu32k.vJoy.common.workset.atomic.ImageType;
 
 public class Filter extends ImageType {
-   private static final long serialVersionUID = 7137610466836768330L;
 
    public static enum FilterType {
       GRAY_SCALE("gray"), INVERT("invert"), BLUR_H("blur_h"), BLUR_V("blur_v"), FLY("fly"), PULSE("pulse"), STAR("star"), KALEIDOSCOPE("kaleidoscope");
@@ -38,7 +37,6 @@ public class Filter extends ImageType {
    }
 
    public class FilterInstance extends ImageInstance {
-      private static final long serialVersionUID = -2500385085728666859L;
 
       public FilterType filterType = FilterType.GRAY_SCALE;
 

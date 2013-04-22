@@ -8,7 +8,6 @@ import eu32k.vJoy.common.workset.Instance;
 import eu32k.vJoy.screen.ScreenStage;
 
 public abstract class ImageInstance extends Instance {
-   private static final long serialVersionUID = 5081927975759923189L;
 
    protected FrameBuffer frameBuffer = Tools.makeFrameBuffer();
 

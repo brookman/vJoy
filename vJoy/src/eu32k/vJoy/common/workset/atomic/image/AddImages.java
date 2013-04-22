@@ -10,7 +10,6 @@ import eu32k.vJoy.common.workset.atomic.ImageInstance;
 import eu32k.vJoy.common.workset.atomic.ImageType;
 
 public class AddImages extends ImageType {
-   private static final long serialVersionUID = -4505510104612477178L;
 
    private ImagePort imageA = addPort(new ImagePort("Image A"));
    private ImagePort imageB = addPort(new ImagePort("Image B"));
@@ -22,7 +21,6 @@ public class AddImages extends ImageType {
    @Override
    public ImageInstance instanciate(float x, float y) {
       return new ImageInstance(this, x, y) {
-         private static final long serialVersionUID = 2620469920518471027L;
 
          private AdvancedShader shader = Tools.getShader("add");
 

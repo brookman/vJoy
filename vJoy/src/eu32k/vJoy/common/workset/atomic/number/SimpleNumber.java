@@ -4,7 +4,6 @@ import eu32k.vJoy.common.workset.atomic.NumberInstance;
 import eu32k.vJoy.common.workset.atomic.NumberType;
 
 public class SimpleNumber extends NumberType {
-   private static final long serialVersionUID = -5335050847175328302L;
 
    public SimpleNumber() {
       super("Number");
@@ -16,7 +15,6 @@ public class SimpleNumber extends NumberType {
    }
 
    public class Testomat extends NumberInstance {
-      private static final long serialVersionUID = 572047342102308310L;
 
       public Testomat(NumberType type, float x, float y) {
          super(type, x, y);

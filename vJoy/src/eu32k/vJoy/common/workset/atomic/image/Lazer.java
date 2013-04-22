@@ -7,7 +7,6 @@ import eu32k.vJoy.common.workset.atomic.ImageInstance;
 import eu32k.vJoy.common.workset.atomic.ImageType;
 
 public class Lazer extends ImageType {
-   private static final long serialVersionUID = -8057719463779401408L;
 
    private NumberPort speed1 = addPort(new NumberPort("Speed 1"));
    private NumberPort speed2 = addPort(new NumberPort("Speed 2"));
@@ -23,7 +22,6 @@ public class Lazer extends ImageType {
    }
 
    public class LazerInstance extends ImageInstance {
-      private static final long serialVersionUID = 6860712495540050514L;
 
       private AdvancedShader shader = Tools.getShader("lazer");
 

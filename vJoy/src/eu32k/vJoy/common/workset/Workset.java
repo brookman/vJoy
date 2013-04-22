@@ -1,6 +1,5 @@
 package eu32k.vJoy.common.workset;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,8 +33,7 @@ import eu32k.vJoy.common.workset.atomic.number.SimpleNumber;
 import eu32k.vJoy.common.workset.atomic.number.Timer;
 import eu32k.vJoy.common.workset.atomic.number.TriTimer;
 
-public class Workset implements Serializable {
-   private static final long serialVersionUID = -1234823133890876777L;
+public class Workset {
 
    public List<Type> types = new ArrayList<Type>();
 

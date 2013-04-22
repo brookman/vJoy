@@ -7,7 +7,6 @@ import eu32k.vJoy.common.workset.atomic.ImageInstance;
 import eu32k.vJoy.common.workset.atomic.ImageType;
 
 public class ColorShader extends ImageType {
-   private static final long serialVersionUID = -5739501646468746216L;
 
    private NumberPort red = addPort(new NumberPort("Red"));
    private NumberPort green = addPort(new NumberPort("Green"));
@@ -21,7 +20,6 @@ public class ColorShader extends ImageType {
    @Override
    public ImageInstance instanciate(float x, float y) {
       return new ImageInstance(this, x, y) {
-         private static final long serialVersionUID = -423553906443936788L;
 
          private AdvancedShader shader = Tools.getShader("color");
 

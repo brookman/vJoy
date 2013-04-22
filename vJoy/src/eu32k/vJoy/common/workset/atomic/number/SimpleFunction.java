@@ -7,7 +7,6 @@ import eu32k.vJoy.common.workset.atomic.NumberInstance;
 import eu32k.vJoy.common.workset.atomic.NumberType;
 
 public class SimpleFunction extends NumberType {
-   private static final long serialVersionUID = 3744548164075589547L;
 
    public static enum FunctionType {
       NEUTRAL, NEG, SIN, COS, NEG_SIN, NEG_COS, TRIANGLE
@@ -25,7 +24,6 @@ public class SimpleFunction extends NumberType {
    }
 
    public class SimpleFunctionInstance extends NumberInstance {
-      private static final long serialVersionUID = 765797734513673619L;
 
       public FunctionType functionType = FunctionType.NEUTRAL;
 

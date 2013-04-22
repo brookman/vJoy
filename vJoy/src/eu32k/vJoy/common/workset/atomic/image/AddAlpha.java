@@ -10,7 +10,6 @@ import eu32k.vJoy.common.workset.atomic.ImageInstance;
 import eu32k.vJoy.common.workset.atomic.ImageType;
 
 public class AddAlpha extends ImageType {
-   private static final long serialVersionUID = 3158225809114249888L;
 
    private ImagePort imageA = addPort(new ImagePort("Image A"));
    private ImagePort imageB = addPort(new ImagePort("Image B"));
@@ -22,7 +21,6 @@ public class AddAlpha extends ImageType {
    @Override
    public ImageInstance instanciate(float x, float y) {
       return new ImageInstance(this, x, y) {
-         private static final long serialVersionUID = -6785596369648860612L;
 
          private AdvancedShader shader = Tools.getShader("stack");
 

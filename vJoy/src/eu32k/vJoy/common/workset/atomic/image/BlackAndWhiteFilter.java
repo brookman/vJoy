@@ -11,7 +11,6 @@ import eu32k.vJoy.common.workset.atomic.ImageInstance;
 import eu32k.vJoy.common.workset.atomic.ImageType;
 
 public class BlackAndWhiteFilter extends ImageType {
-   private static final long serialVersionUID = -8484558206144263729L;
 
    private ImagePort image = addPort(new ImagePort("Input"));
    private NumberPort threshold = addPort(new NumberPort("Threshold"));
@@ -23,7 +22,6 @@ public class BlackAndWhiteFilter extends ImageType {
    @Override
    public ImageInstance instanciate(float x, float y) {
       return new ImageInstance(this, x, y) {
-         private static final long serialVersionUID = 8357836569508962604L;
 
          private AdvancedShader shader = Tools.getShader("bw");
 
