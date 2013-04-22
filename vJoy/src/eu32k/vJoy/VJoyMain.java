@@ -1,13 +1,20 @@
 package eu32k.vJoy;
 
+import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.List;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.cedarsoftware.util.io.JsonReader;
+import com.cedarsoftware.util.io.JsonWriter;
 
 import eu32k.vJoy.architect.ArchitectStage;
 import eu32k.vJoy.common.Tools;
+import eu32k.vJoy.common.newConcept.Workset;
 import eu32k.vJoy.screen.ScreenStage;
 
 public class VJoyMain extends App2D {
@@ -22,11 +29,24 @@ public class VJoyMain extends App2D {
    private Stage screenStage;
    private Stage debugStage;
 
-   public VJoyMain() {
-   }
-
    public VJoyMain(int size) {
       Tools.RESOLUTION = size;
+
+      BigInteger number = new BigInteger("234234234234234");
+
+      List<BigInteger> list = new ArrayList<BigInteger>();
+      list.add(number);
+      list.add(number);
+
+      String json = JsonWriter.toJson(new Workset());
+      System.out.println("json: " + json);
+
+      Object object = JsonReader.toJava(json);
+      System.out.println("object: " + object);
+
+      String json2 = JsonWriter.toJson(new Workset());
+      System.out.println("json2: " + json2);
+
    }
 
    @Override
