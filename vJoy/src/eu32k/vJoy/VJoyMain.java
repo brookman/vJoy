@@ -15,6 +15,7 @@ import com.cedarsoftware.util.io.JsonWriter;
 import eu32k.vJoy.architect.ArchitectStage;
 import eu32k.vJoy.common.Tools;
 import eu32k.vJoy.common.newConcept.Workset;
+import eu32k.vJoy.curveEditor.CurveEditorStage;
 import eu32k.vJoy.screen.ScreenStage;
 
 public class VJoyMain extends App2D {
@@ -28,6 +29,7 @@ public class VJoyMain extends App2D {
    private Stage architectStage;
    private Stage screenStage;
    private Stage debugStage;
+   private Stage curveEditorStage;
 
    public VJoyMain(int size) {
       Tools.RESOLUTION = size;
@@ -56,8 +58,9 @@ public class VJoyMain extends App2D {
       mainMenuStage = new MainMenuStage(this);
       architectStage = new ArchitectStage();
       screenStage = new ScreenStage();
+      curveEditorStage = new CurveEditorStage();
 
-      changeStage(architectStage);
+      changeStage(curveEditorStage);
    }
 
    // public void createController(String name, BroadcastAddress address) {
