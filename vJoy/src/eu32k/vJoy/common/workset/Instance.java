@@ -1,6 +1,5 @@
 package eu32k.vJoy.common.workset;
 
-import java.io.Serializable;
 import java.util.HashMap;
 
 import com.badlogic.gdx.graphics.Texture;

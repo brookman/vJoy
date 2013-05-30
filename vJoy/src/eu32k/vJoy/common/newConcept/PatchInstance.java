@@ -1,16 +1,16 @@
 package eu32k.vJoy.common.newConcept;
 
 public class PatchInstance implements Movable {
-   private int patchId;
+   private Patch patch;
    private Position position;
 
-   public PatchInstance(int patchId, Position position) {
-      this.patchId = patchId;
+   public PatchInstance(Patch patch, Position position) {
+      this.patch = patch;
       this.position = position;
    }
 
-   public int getPatchId() {
-      return patchId;
+   public Patch getPatch() {
+      return patch;
    }
 
    @Override

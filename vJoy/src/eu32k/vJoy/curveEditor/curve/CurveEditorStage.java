@@ -45,8 +45,9 @@ public class CurveEditorStage extends Stage {
 
    public CurveEditorStage() {
 
-      Mpg123Decoder decoder = new Mpg123Decoder(Gdx.files.absolute("C:/setfos_ws/vJoy/vJoy-android/assets/sound/orca.mp3"));
-      // Mpg123Decoder decoder = new Mpg123Decoder(Gdx.files.absolute("C:/Users/pc0/Desktop/sound/Airi_-_Smyle-2011-UPE/03-airi_-_rainbox-upe.mp3"));
+      Mpg123Decoder decoder = new Mpg123Decoder(Gdx.files.absolute("C:/java_workspace/vJoy/vJoy-android/assets/sound/orca.mp3"));
+      // Mpg123Decoder decoder = new
+      // Mpg123Decoder(Gdx.files.absolute("C:/Users/pc0/Desktop/sound/Airi_-_Smyle-2011-UPE/03-airi_-_rainbox-upe.mp3"));
 
       rate = decoder.getRate();
       channels = decoder.getChannels();

@@ -1,5 +1,6 @@
 package eu32k.vJoy.curveEditor;
 
+import java.text.DecimalFormat;
 import java.util.Arrays;
 
 import com.badlogic.gdx.audio.AudioDevice;
@@ -30,8 +31,12 @@ public class MusicPlayer extends Table {
    private TextButton playButton;
    private Slider slider;
    private Label label;
+   private Slider volume;
 
-   public MusicPlayer(AudioDevice device, short[] soundData) {
+   private static final DecimalFormat decimalFormatMin = new DecimalFormat("00");
+   private static final DecimalFormat decimalFormatSec = new DecimalFormat("00.000");
+
+   public MusicPlayer(final AudioDevice device, short[] soundData) {
       this.device = device;
       this.soundData = soundData;
 
@@ -68,12 +73,23 @@ public class MusicPlayer extends Table {
          }
       });
 
-      label = new Label("wut", VJoyMain.SKIN);
+      volume = new Slider(0.0f, 1.0f, 0.01f, false, VJoyMain.SKIN);
+      volume.setValue(1.0f);
+      volume.addListener(new ChangeListener() {
+         @Override
+         public void changed(ChangeEvent event, Actor actor) {
+            device.setVolume(volume.getValue());
+         }
+      });
+
+      label = new Label("", VJoyMain.SKIN);
 
       add(playButton).left().pad(5);
       add(stopButton).left().pad(5);
       add(label).left().pad(5);
       add(slider).left().pad(5).expandX().fillX();
+      add(new Label("Volume:", VJoyMain.SKIN)).left().pad(5);
+      add(volume).left().pad(5);
 
       createPlayer();
    }
@@ -83,10 +99,16 @@ public class MusicPlayer extends Table {
          @Override
          public void run() {
             while (running) {
-               if (playing && position < soundData.length) {
-                  int end = Math.min(position + CHUNK_SIZE, soundData.length - 1);
-                  device.writeSamples(Arrays.copyOfRange(soundData, position, end), 0, end - position);
-                  position += CHUNK_SIZE;
+               int pos = 0;
+               synchronized (this) {
+                  pos = position;
+               }
+               if (playing && pos < soundData.length) {
+                  int end = Math.min(pos + CHUNK_SIZE, soundData.length - 1);
+                  device.writeSamples(Arrays.copyOfRange(soundData, pos, end), 0, end - pos);
+                  synchronized (this) {
+                     position += CHUNK_SIZE;
+                  }
                } else {
                   try {
                      Thread.sleep(5);
@@ -101,19 +123,23 @@ public class MusicPlayer extends Table {
    }
 
    public void update() {
-      slider.setValue(MathUtils.clamp(position, 0, soundData.length - 1));
+      int realPos = MathUtils.clamp(position, 0, soundData.length - 1);
+      slider.setValue(realPos);
+      label.setText(getTimeString(realPos, 2, 44100) + " / " + getTimeString(soundData.length, 2, 44100));
+   }
 
-      double seconds = position / (double) 2 / 44100;
-      double minutes = seconds / 60.0;
-      double seconds2 = (minutes - Math.floor(minutes)) * 60.0;
+   private static String getTimeString(int position, int channels, int samplesPerSecond) {
+      double minutes = (double) position / (double) channels / samplesPerSecond / 60.0;
+      double minutesFloor = Math.floor(minutes);
+      double seconds = (minutes - minutesFloor) * 60.0;
 
-      seconds2 = Math.floor(seconds2 * 100.0) / 100.0;
-      minutes = Math.floor(minutes);
-      label.setText((int) minutes + " min " + seconds2 + " sec");
+      return decimalFormatMin.format(minutesFloor) + ":" + decimalFormatSec.format(seconds);
    }
 
    public void setPosition(int pos) {
-      position = pos;
+      synchronized (this) {
+         position = pos;
+      }
    }
 
    public void play() {

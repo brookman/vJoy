@@ -1,7 +1,5 @@
 package eu32k.vJoy.common.workset;
 
-import java.io.Serializable;
-
 public class Port {
 
    private String name;
