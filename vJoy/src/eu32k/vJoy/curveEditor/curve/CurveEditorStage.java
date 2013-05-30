@@ -35,8 +35,6 @@ public class CurveEditorStage extends Stage {
 
    private Slider zoomSliderX;
    private Slider zoomSliderY;
-   private Slider slider1;
-   private Slider slider2;
 
    private int from = 0;
    private boolean hasToUpdate = false;
@@ -94,26 +92,13 @@ public class CurveEditorStage extends Stage {
          }
       });
 
-      slider1 = new Slider(0, allSamples.length, 1, false, VJoyMain.SKIN);
-      slider2 = new Slider(0, allSamples.length, 1, false, VJoyMain.SKIN);
-      slider2.addListener(new ChangeListener() {
-         @Override
-         public void changed(ChangeEvent event, Actor actor) {
-            player.setPosition((int) slider2.getValue());
-            from = (int) slider2.getValue();
-            hasToUpdate = true;
-         }
-      });
-
+      table.add(player).fillX().expandX();
+      table.row();
       table.add(zoomSliderX).fillX().expandX();
       table.row();
       table.add(new PixmapWidget(pixmapChannel1)).fill().expand();
       table.row();
       table.add(new PixmapWidget(pixmapChannel2)).fill().expand();
-      table.row();
-      table.add(slider1).fillX().expandX();
-      table.row();
-      table.add(slider2).fillX().expandX();
       table.row();
 
       addActor(table);
@@ -167,7 +152,7 @@ public class CurveEditorStage extends Stage {
          pixmapChannel2.updatePixmap(new Rectangle(f, 0, t - f, zoomY));
       }
 
-      slider1.setValue(Math.min(player.getPosition(), allSamples.length));
+      player.update();
       super.draw();
    }
 
