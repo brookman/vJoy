@@ -36,7 +36,6 @@ public class CurveEditorStage extends Stage {
    private Slider zoomSliderX;
    private Slider zoomSliderY;
 
-   private int from = 0;
    private boolean hasToUpdate = false;
 
    private float zoomX = 0.05f;
@@ -88,19 +87,17 @@ public class CurveEditorStage extends Stage {
       zoomSliderX.addListener(new ChangeListener() {
          @Override
          public void changed(ChangeEvent event, Actor actor) {
-            zoomX = zoomSliderX.getValue();
-            hasToUpdate = true;
+            setZoomX(zoomSliderX.getValue());
          }
       });
 
       table.add(player).fillX().expandX();
       table.row();
-      table.add(zoomSliderX).fillX().expandX();
-      table.row();
       table.add(new PixmapWidget(pixmapChannel1)).fill().expand();
       table.row();
       table.add(new PixmapWidget(pixmapChannel2)).fill().expand();
       table.row();
+      table.add(zoomSliderX).fillX().expandX();
 
       addActor(table);
 
@@ -110,18 +107,14 @@ public class CurveEditorStage extends Stage {
 
    @Override
    public boolean scrolled(int x) {
-      zoomX += x * 0.005f;
-      // if (x < 0) {
-      // zoomX = Math.round(zoomX * 0.99f * Math.abs(x));
-      // } else {
-      // zoomX = Math.round(zoomX * 1.01f * Math.abs(x));
-      // }
-
-      zoomX = MathUtils.clamp(zoomX, zoomRange.x, zoomRange.width);
-
+      setZoomX(zoomX + x * 0.01f);
       zoomSliderX.setValue(zoomX);
-      hasToUpdate = true;
       return true;
+   }
+
+   private void setZoomX(float zoomX) {
+      this.zoomX = MathUtils.clamp(zoomX, zoomRange.x, zoomRange.width);
+      hasToUpdate = true;
    }
 
    boolean updated = false;
@@ -133,7 +126,6 @@ public class CurveEditorStage extends Stage {
          if (spaceArmed) {
             if (player.isPlaying()) {
                player.pause();
-               player.setPosition(from);
             } else {
                player.play();
             }
@@ -145,12 +137,13 @@ public class CurveEditorStage extends Stage {
 
       if (hasToUpdate) {
          hasToUpdate = false;
-         float fromD = (float) from / (float) allSamples.length;
-         float f = Math.max(0.0f, fromD - zoomX / 2.0f);
-         float t = Math.min(fromD + zoomX / 2.0f, 1.0f);
+         float fromX = (float) player.getPosition() / allSamples.length - zoomX / 2.0f;
 
-         pixmapChannel1.updatePixmap(new Rectangle(f, 0, t - f, zoomY));
-         pixmapChannel2.updatePixmap(new Rectangle(f, 0, t - f, zoomY));
+         fromX = MathUtils.clamp(fromX, 0.0f, 1.0f - zoomX / 2.0f);
+
+         Rectangle rect = new Rectangle(fromX, 0, zoomX, zoomY);
+         pixmapChannel1.updatePixmap(rect);
+         pixmapChannel2.updatePixmap(rect);
       }
 
       player.update();

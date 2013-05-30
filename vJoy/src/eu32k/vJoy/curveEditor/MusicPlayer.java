@@ -132,7 +132,6 @@ public class MusicPlayer extends Table {
       double minutes = (double) position / (double) channels / samplesPerSecond / 60.0;
       double minutesFloor = Math.floor(minutes);
       double seconds = (minutes - minutesFloor) * 60.0;
-
       return decimalFormatMin.format(minutesFloor) + ":" + decimalFormatSec.format(seconds);
    }
 
