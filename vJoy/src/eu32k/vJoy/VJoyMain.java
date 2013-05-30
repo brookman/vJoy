@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -15,7 +14,7 @@ import com.cedarsoftware.util.io.JsonWriter;
 import eu32k.vJoy.architect.ArchitectStage;
 import eu32k.vJoy.common.Tools;
 import eu32k.vJoy.common.newConcept.Workset;
-import eu32k.vJoy.curveEditor.CurveEditorStage;
+import eu32k.vJoy.curveEditor.curve.CurveEditorStage;
 import eu32k.vJoy.screen.ScreenStage;
 
 public class VJoyMain extends App2D {
@@ -127,11 +126,11 @@ public class VJoyMain extends App2D {
 
       screenStage.draw();
 
-      boolean drawHud = !Gdx.input.isKeyPressed(Input.Keys.SPACE) && Gdx.graphics.getHeight() - Gdx.input.getY() > 10;
-      if (drawHud) {
-         currentStage.act(Gdx.graphics.getDeltaTime());
-         currentStage.draw();
-      }
+      // boolean drawHud = Gdx.graphics.getHeight() - Gdx.input.getY() > 10;
+      // if (drawHud) {
+      currentStage.act(Gdx.graphics.getDeltaTime());
+      currentStage.draw();
+      // }
    }
 
    @Override
@@ -141,6 +140,7 @@ public class VJoyMain extends App2D {
 
    @Override
    public void dispose() {
+      currentStage.dispose();
    }
 
    @Override

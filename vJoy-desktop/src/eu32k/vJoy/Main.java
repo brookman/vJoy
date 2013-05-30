@@ -18,7 +18,7 @@ public class Main {
       cfg.samples = 4;
       cfg.useGL20 = true;
       cfg.vSyncEnabled = true;
-      cfg.resizable = false;
+      cfg.resizable = true;
       cfg.addIcon("textures/icon_small.png", FileType.Local);
 
       int width = Toolkit.getDefaultToolkit().getScreenSize().width - 100;
