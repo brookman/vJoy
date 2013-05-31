@@ -1,6 +1,10 @@
 package eu32k.vJoy;
 
 import java.awt.Toolkit;
+import java.io.File;
+
+import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileFilter;
 
 import com.badlogic.gdx.Files.FileType;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
@@ -31,7 +35,24 @@ public class Main {
       cfg.width = width;
       cfg.height = height;
 
-      VJoyMain vjoy1 = new VJoyMain(height);
+      String path = "C:/setfos_ws/vJoy/vJoy-android/assets/sound/orca.mp3";
+      JFileChooser chooser = new JFileChooser();
+      chooser.setFileFilter(new FileFilter() {
+         @Override
+         public String getDescription() {
+            return "music file (.mp3)";
+         }
+
+         @Override
+         public boolean accept(File f) {
+            return f.isDirectory() || f.getAbsolutePath().toLowerCase().endsWith(".mp3");
+         }
+      });
+      if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+         path = chooser.getSelectedFile().getAbsolutePath();
+      }
+
+      VJoyMain vjoy1 = new VJoyMain(height, path);
       // VJoyMain vjoy2 = new VJoyMain();
       //
       // LwjglAWTCanvas canvas1 = new LwjglAWTCanvas(vjoy1, true);

@@ -7,6 +7,8 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 
+import eu32k.vJoy.curveEditor.audio.AudioTrack;
+
 public class SpectrumPixmap extends Pixmap {
 
    private final static int SAMPLES = 4096 * 2;
@@ -19,9 +21,16 @@ public class SpectrumPixmap extends Pixmap {
 
    private short[] allSamples;
 
-   public SpectrumPixmap(int width, int height, short[] allSamples) {
+   private boolean gauss = true;
+   private double max = 1;
+
+   private AudioTrack track;
+
+   public SpectrumPixmap(int width, int height, AudioTrack track, boolean gauss) {
       super(width, height, Format.RGBA8888);
-      this.allSamples = allSamples;
+      this.track = track;
+      allSamples = track.getChannelSamples(0);
+      this.gauss = gauss;
    }
 
    public synchronized void updatePixmap(final Rectangle area) {
@@ -39,18 +48,20 @@ public class SpectrumPixmap extends Pixmap {
       updateThread = new Thread(new Runnable() {
          @Override
          public void run() {
-            doUpdate(area, 8);
-            doUpdate(area, 1);
+            for (int i = 0; i < 8; i++) {
+               doUpdate(area, 8, i);
+            }
+
             isUpdating = false;
          }
       });
       updateThread.start();
    }
 
-   private void doUpdate(Rectangle area, int resolution) {
+   private void doUpdate(Rectangle area, int passes, int pass) {
       float[] spectrum = new float[SAMPLES / 2 + 1];
 
-      for (int i = 0; i < getWidth(); i += resolution) {
+      for (int i = pass; i < getWidth(); i += passes) {
          if (cancel) {
             return;
          }
@@ -62,14 +73,15 @@ public class SpectrumPixmap extends Pixmap {
          int fromX = MathUtils.clamp(centerX - SAMPLES / 2, 0, allSamples.length - 1);
          int toX = MathUtils.clamp(centerX + SAMPLES / 2, 0, allSamples.length - 1);
 
-         short[] range = new short[SAMPLES];
-         System.arraycopy(allSamples, fromX, range, 0, toX - fromX);
+         short[] range = track.getRange(0, fromX, toX);
 
-         for (int r = 0; r < range.length; r++) {
-            double x = (double) r / (double) range.length * 4.0 - 2.0;
-            double d = range[r];
-            d *= Math.exp(-(x * x * 2.0));
-            range[r] = (short) d;
+         if (gauss) {
+            for (int r = 0; r < range.length; r++) {
+               double x = (double) r / (double) range.length * 4.0 - 2.0;
+               double d = range[r];
+               d *= Math.exp(-1.0 * (x * x));
+               range[r] = (short) d;
+            }
          }
          fft.spectrum(range, spectrum);
 
@@ -81,16 +93,14 @@ public class SpectrumPixmap extends Pixmap {
             double normalizedPositionInSubRangeY = (double) j / (double) getHeight();
             double normalizedPositionInGlobalRangeY = area.getY() + area.getHeight() * normalizedPositionInSubRangeY;
             int posY = (int) Math.round(normalizedPositionInGlobalRangeY * spectrum.length);
-            posY = MathUtils.clamp(posY, 1, spectrum.length - 2);
+            posY = MathUtils.clamp(posY, 2, spectrum.length - 2);
 
-            double magnitute = Math.sqrt(spectrum[posY] * spectrum[posY] + spectrum[posY + 1] + spectrum[posY + 1]);
+            double magnitude = Math.sqrt(spectrum[posY] * spectrum[posY] + spectrum[posY + 1] + spectrum[posY + 1]);
 
-            setColor(0x000000ff | getColor(magnitute / (SAMPLES / 4.0)) << 8);
-            if (resolution != 1) {
-               drawRectangle(i, getHeight() - j, resolution, 1);
-            } else {
-               drawPixel(i, getHeight() - j);
-            }
+            max = Math.max(max, magnitude);
+
+            setColor(0x000000ff | getColor(magnitude / (max * 1.1)) << 8);
+            drawRectangle(i, getHeight() - j, passes - pass, 1);
          }
       }
    }
@@ -116,7 +126,7 @@ public class SpectrumPixmap extends Pixmap {
          normalized = (value - min) / (max - min);
       }
 
-      double fadeoff = 0.05;
+      double fadeoff = 0.1;
       double brightness = normalized < fadeoff ? normalized * (1.0 / fadeoff) : 1.0;
 
       return Color.HSBtoRGB((1.0f - (float) normalized) * 0.75f, 1.0f, (float) brightness); // cutoff at 0.75 because hue is "circular"

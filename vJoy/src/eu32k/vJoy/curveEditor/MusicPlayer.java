@@ -15,6 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 
 import eu32k.vJoy.VJoyMain;
+import eu32k.vJoy.curveEditor.audio.AudioTrack;
 
 public class MusicPlayer extends Table {
 
@@ -36,9 +37,9 @@ public class MusicPlayer extends Table {
    private static final DecimalFormat decimalFormatMin = new DecimalFormat("00");
    private static final DecimalFormat decimalFormatSec = new DecimalFormat("00.000");
 
-   public MusicPlayer(final AudioDevice device, short[] soundData) {
+   public MusicPlayer(final AudioDevice device, AudioTrack track) {
       this.device = device;
-      this.soundData = soundData;
+      soundData = track.getAllSamples();
 
       playButton = new TextButton("Play / Pause", VJoyMain.SKIN);
       playButton.addListener(new InputListener() {
