@@ -1,5 +1,6 @@
 package eu32k.vJoy.curveEditor.spectrum;
 
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -7,10 +8,10 @@ import com.badlogic.gdx.scenes.scene2d.ui.Widget;
 
 public class PixmapWidget extends Widget {
 
-   private SpectrumPixmap pixmap;
+   private Pixmap pixmap;
    private Texture texture;
 
-   public PixmapWidget(SpectrumPixmap pixmap) {
+   public PixmapWidget(Pixmap pixmap) {
       this.pixmap = pixmap;
       texture = new Texture(pixmap);
       texture.setFilter(TextureFilter.Linear, TextureFilter.Linear);

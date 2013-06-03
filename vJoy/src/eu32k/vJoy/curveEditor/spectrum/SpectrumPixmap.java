@@ -8,6 +8,7 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 
 import eu32k.vJoy.curveEditor.audio.AudioTrack;
+import eu32k.vJoy.curveEditor.misc.FloatArray;
 
 public class SpectrumPixmap extends Pixmap {
 
@@ -23,13 +24,14 @@ public class SpectrumPixmap extends Pixmap {
 
    private boolean gauss = true;
    private double max = 1;
+   private double maxEnergy = 1;
 
    private AudioTrack track;
 
    public SpectrumPixmap(int width, int height, AudioTrack track, boolean gauss) {
       super(width, height, Format.RGBA8888);
       this.track = track;
-      allSamples = track.getChannelSamples(0);
+      allSamples = track.getCombined();
       this.gauss = gauss;
    }
 
@@ -73,7 +75,7 @@ public class SpectrumPixmap extends Pixmap {
          int fromX = MathUtils.clamp(centerX - SAMPLES / 2, 0, allSamples.length - 1);
          int toX = MathUtils.clamp(centerX + SAMPLES / 2, 0, allSamples.length - 1);
 
-         short[] range = track.getRange(0, fromX, toX);
+         short[] range = track.getRange(fromX, toX);
 
          if (gauss) {
             for (int r = 0; r < range.length; r++) {
@@ -84,6 +86,10 @@ public class SpectrumPixmap extends Pixmap {
             }
          }
          fft.spectrum(range, spectrum);
+         FloatArray na = new FloatArray(spectrum);
+         double energy = na.sum();
+         maxEnergy = Math.max(maxEnergy, energy);
+         // System.out.println("energy " + energy + " max " + maxEnergy);
 
          for (int j = 0; j < getHeight(); j++) {
             if (cancel) {
@@ -93,7 +99,7 @@ public class SpectrumPixmap extends Pixmap {
             double normalizedPositionInSubRangeY = (double) j / (double) getHeight();
             double normalizedPositionInGlobalRangeY = area.getY() + area.getHeight() * normalizedPositionInSubRangeY;
             int posY = (int) Math.round(normalizedPositionInGlobalRangeY * spectrum.length);
-            posY = MathUtils.clamp(posY, 2, spectrum.length - 2);
+            posY = MathUtils.clamp(posY, 0, spectrum.length - 2);
 
             double magnitude = Math.sqrt(spectrum[posY] * spectrum[posY] + spectrum[posY + 1] + spectrum[posY + 1]);
 
@@ -102,6 +108,7 @@ public class SpectrumPixmap extends Pixmap {
             setColor(0x000000ff | getColor(magnitude / (max * 1.1)) << 8);
             drawRectangle(i, getHeight() - j, passes - pass, 1);
          }
+
       }
    }
 

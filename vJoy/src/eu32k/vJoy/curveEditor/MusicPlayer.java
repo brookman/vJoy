@@ -39,7 +39,7 @@ public class MusicPlayer extends Table {
 
    public MusicPlayer(final AudioDevice device, AudioTrack track) {
       this.device = device;
-      soundData = track.getAllSamples();
+      soundData = track.getAll();
 
       playButton = new TextButton("Play / Pause", VJoyMain.SKIN);
       playButton.addListener(new InputListener() {
@@ -139,6 +139,9 @@ public class MusicPlayer extends Table {
    public void setPosition(int pos) {
       synchronized (this) {
          position = pos;
+         if (position % 2 != 0) {
+            position--;
+         }
       }
    }
 

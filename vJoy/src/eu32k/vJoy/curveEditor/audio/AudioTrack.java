@@ -4,85 +4,78 @@ import com.badlogic.gdx.audio.io.Mpg123Decoder;
 import com.badlogic.gdx.files.FileHandle;
 
 public class AudioTrack {
-
    private int rate;
-   private int channels;
-   private int samplesPerSecond;
-   private int samplesPerChannel;
-   private short[] allSamples;
-   private short[][] audioSamples;
+   private boolean mono;
 
-   public AudioTrack(FileHandle fileHandle, boolean mergeChannels) {
+   private short[] all;
+   private short[] channel1;
+   private short[] channel2;
+   private short[] combined;
+
+   public AudioTrack(FileHandle fileHandle) {
       Mpg123Decoder decoder = new Mpg123Decoder(fileHandle);
       rate = decoder.getRate();
-      channels = decoder.getChannels();
-      samplesPerSecond = rate * channels;
-      allSamples = decoder.readAllSamples();
-      samplesPerChannel = allSamples.length / channels;
+      mono = decoder.getChannels() == 1;
+      all = decoder.readAllSamples();
       decoder.dispose();
 
-      if (mergeChannels) {
-         audioSamples = new short[1][samplesPerChannel];
-         for (int i = 0; i < samplesPerChannel; i++) {
-            short value = 0;
-            for (int c = 0; c < channels; c++) {
-               value = (short) Math.max(value, allSamples[i * channels + c]);
-            }
-            audioSamples[0][i] = value;
-         }
+      if (mono) {
+         channel1 = all;
+         channel2 = all;
+         combined = all;
       } else {
-         audioSamples = new short[channels][samplesPerChannel];
-         for (int i = 0; i < samplesPerChannel; i++) {
-            for (int c = 0; c < channels; c++) {
-               audioSamples[c][i] = allSamples[i * channels + c];
-            }
-         }
+         channel1 = new short[all.length / 2];
+         channel2 = new short[all.length / 2];
+         combined = new short[all.length / 2];
       }
+
+      for (int i = 0; i < channel1.length; i++) {
+         short c1 = all[i * 2];
+         short c2 = all[i * 2 + 1];
+         channel1[i] = c1;
+         channel2[i] = c2;
+         combined[i] = (short) Math.max(c1, c2);
+      }
+
+   }
+
+   public boolean isMono() {
+      return mono;
    }
 
    public int getRate() {
       return rate;
    }
 
-   public int getChannels() {
-      return channels;
+   public short[] getAll() {
+      return all;
    }
 
-   public int getSamplesPerSecond() {
-      return samplesPerSecond;
+   public short[] getChannel1() {
+      return channel1;
    }
 
-   public int getSamplesPerChannel() {
-      return samplesPerChannel;
+   public short[] getChannel2() {
+      return channel2;
    }
 
-   public short[] getAllSamples() {
-      return allSamples;
-   }
-
-   public short[][] getAudioSamples() {
-      return audioSamples;
-   }
-
-   public short[] getChannelSamples(int channel) {
-      return audioSamples[channel];
+   public short[] getCombined() {
+      return combined;
    }
 
    public double getLengthInSeconds() {
-      return (double) samplesPerChannel / (double) samplesPerSecond;
+      return (double) channel1.length / (double) rate;
    }
 
-   public short[] getRange(int channel, int from, int to) {
+   public static short[] getRange(short[] array, int from, int to) {
       int size = to - from;
       short[] range = new short[size];
-      System.arraycopy(audioSamples[channel], from, range, 0, size);
+      System.arraycopy(array, from, range, 0, size);
       return range;
    }
 
    public short[] getRange(int from, int to) {
-      int size = to - from;
-      short[] range = new short[size];
-      System.arraycopy(audioSamples[0], from, range, 0, size);
-      return range;
+      return getRange(combined, from, to);
    }
+
 }
