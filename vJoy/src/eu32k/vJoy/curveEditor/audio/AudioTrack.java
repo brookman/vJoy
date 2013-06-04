@@ -36,6 +36,7 @@ public class AudioTrack {
          channel2[i] = c2;
          combined[i] = (short) Math.max(c1, c2);
       }
+      System.out.println("size " + combined.length);
 
    }
 

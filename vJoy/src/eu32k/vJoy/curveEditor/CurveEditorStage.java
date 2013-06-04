@@ -44,8 +44,8 @@ public class CurveEditorStage extends Stage {
 
       device = Gdx.audio.newAudioDevice(track.getRate(), track.isMono());
       player = new MusicPlayer(device, track);
-      waveform = new WaveformPixmap(1920 * 2, 1080, track);
-      spectrum = new SpectrumPixmap(1920 * 2, 1080, track);
+      waveform = new WaveformPixmap(1920, 1080, track);
+      spectrum = new SpectrumPixmap(1920, 1080, track);
 
       Table table = new Table();
       table.setFillParent(true);
@@ -129,6 +129,7 @@ public class CurveEditorStage extends Stage {
 
       float np = (float) player.getNormalizedPosition();
       if (lastPosition != np || lastZoomX != zoomX || lastZoomY != zoomY) {
+         System.out.println("zoom x " + zoomX);
          lastPosition = np;
          lastZoomX = zoomX;
          lastZoomY = zoomY;
