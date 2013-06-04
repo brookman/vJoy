@@ -67,15 +67,15 @@ public class AudioTrack {
       return (double) channel1.length / (double) rate;
    }
 
-   public static short[] getRange(short[] array, int from, int to) {
-      int size = to - from;
+   public static short[] getRange(short[] array, int from, int to, int size) {
+      int realSize = to - from;
       short[] range = new short[size];
-      System.arraycopy(array, from, range, 0, size);
+      System.arraycopy(array, from, range, 0, realSize);
       return range;
    }
 
-   public short[] getRange(int from, int to) {
-      return getRange(combined, from, to);
+   public short[] getRange(int from, int to, int size) {
+      return getRange(combined, from, to, size);
    }
 
 }

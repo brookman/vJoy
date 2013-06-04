@@ -1,48 +1,17 @@
 package eu32k.vJoy.curveEditor.spectrum;
 
-import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.math.Rectangle;
-
 import eu32k.vJoy.curveEditor.audio.AudioTrack;
 import eu32k.vJoy.curveEditor.misc.ArrayTools;
+import eu32k.vJoy.curveEditor.misc.Range;
 
-public class WaveformPixmap extends Pixmap {
-
-   private boolean isUpdating = false;
-
-   private Thread updateThread;
-   private boolean cancel = false;
-
-   private AudioTrack track;
+public class WaveformPixmap extends ExtendedPixmap {
 
    public WaveformPixmap(int width, int height, AudioTrack track) {
-      super(width, height, Format.RGBA8888);
-      this.track = track;
+      super(width, height, track);
    }
 
-   public synchronized void updatePixmap(final Rectangle area) {
-      if (isUpdating) {
-         cancel = true;
-         try {
-            updateThread.join();
-         } catch (InterruptedException e) {
-            // NOP
-         }
-      }
-      cancel = false;
-      isUpdating = true;
-
-      updateThread = new Thread(new Runnable() {
-         @Override
-         public void run() {
-            doUpdate(area);
-            isUpdating = false;
-         }
-      });
-      updateThread.start();
-   }
-
-   private void doUpdate(Rectangle area) {
+   @Override
+   protected void update(Range range, float position, int pass) {
 
       setColor(0, 0, 0, 1);
       fillRectangle(0, 0, getWidth(), getHeight());
@@ -53,7 +22,7 @@ public class WaveformPixmap extends Pixmap {
          }
 
          double normalizedPositionInSubRangeX = (double) i / (double) getWidth();
-         double normalizedPositionInGlobalRangeX = area.getX() + area.getWidth() * normalizedPositionInSubRangeX;
+         double normalizedPositionInGlobalRangeX = range.fromX + range.getSizeX() * normalizedPositionInSubRangeX;
 
          short value1 = ArrayTools.getNormalizedValue(track.getChannel1(), normalizedPositionInGlobalRangeX);
          short value2 = ArrayTools.getNormalizedValue(track.getChannel2(), normalizedPositionInGlobalRangeX);
@@ -83,6 +52,8 @@ public class WaveformPixmap extends Pixmap {
          // setColor(0x000000ff | getColor(magnitude / (max * 1.1)) << 8);
          // drawRectangle(i, getHeight() - j, passes - pass, 1);
          // }
+         setChanged(true);
       }
+
    }
 }

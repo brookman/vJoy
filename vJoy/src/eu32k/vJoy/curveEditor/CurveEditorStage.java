@@ -14,6 +14,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 
 import eu32k.vJoy.VJoyMain;
 import eu32k.vJoy.curveEditor.audio.AudioTrack;
+import eu32k.vJoy.curveEditor.misc.KeyPressEvent;
+import eu32k.vJoy.curveEditor.misc.Range;
 import eu32k.vJoy.curveEditor.spectrum.PixmapWidget;
 import eu32k.vJoy.curveEditor.spectrum.SpectrumPixmap;
 import eu32k.vJoy.curveEditor.spectrum.WaveformPixmap;
@@ -42,8 +44,8 @@ public class CurveEditorStage extends Stage {
 
       device = Gdx.audio.newAudioDevice(track.getRate(), track.isMono());
       player = new MusicPlayer(device, track);
-      waveform = new WaveformPixmap(1920, 1080, track);
-      spectrum = new SpectrumPixmap(1920, 1080, track);
+      waveform = new WaveformPixmap(1920 * 2, 1080, track);
+      spectrum = new SpectrumPixmap(1920 * 2, 1080, track);
 
       Table table = new Table();
       table.setFillParent(true);
@@ -83,9 +85,22 @@ public class CurveEditorStage extends Stage {
 
       addActor(table);
 
-      waveform.updatePixmap(new Rectangle(0.0f, 0.0f, zoomX, zoomY));
-      spectrum.updatePixmap(new Rectangle(0.0f, 0.0f, zoomX, zoomY));
+      Range range = new Range(0.0f, zoomX, 0.0f, zoomY);
+
+      waveform.updatePixmap(range, 0);
+      spectrum.updatePixmap(range, 0);
       // pixmapChannel2.updatePixmap(new Rectangle(0.0f, 0.0f, zoomX, zoomY));
+
+      new KeyPressEvent(Input.Keys.SPACE) {
+         @Override
+         public void onPress() {
+            if (player.isPlaying()) {
+               player.pause();
+            } else {
+               player.play();
+            }
+         }
+      };
    }
 
    @Override
@@ -104,40 +119,34 @@ public class CurveEditorStage extends Stage {
    }
 
    boolean updated = false;
-   boolean spaceArmed = true;
-   private int lastPosition = -1;
+   private float lastPosition = -1;
    private float lastZoomX = -1;
    private float lastZoomY = -1;
 
    @Override
    public void draw() {
-      if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
-         if (spaceArmed) {
-            if (player.isPlaying()) {
-               player.pause();
-            } else {
-               player.play();
-            }
-            spaceArmed = false;
-         }
-      } else {
-         spaceArmed = true;
-      }
+      KeyPressEvent.update();
 
-      if (lastPosition != player.getPosition() || lastZoomX != zoomX || lastZoomY != zoomY) {
-         lastPosition = player.getPosition();
+      float np = (float) player.getNormalizedPosition();
+      if (lastPosition != np || lastZoomX != zoomX || lastZoomY != zoomY) {
+         lastPosition = np;
          lastZoomX = zoomX;
          lastZoomY = zoomY;
 
-         float fromX = (float) player.getPosition() / track.getAll().length - zoomX / 2.0f;
+         float low = np - zoomX / 2.0f;
+         float high = np + zoomX / 2.0f;
+         if (low < 0) {
+            low = 0;
+            high = zoomX;
+         } else if (high > 1) {
+            high = 1;
+            low = 1 - zoomX;
+         }
 
-         fromX = MathUtils.clamp(fromX, 0.0f, 1.0f - zoomX / 2.0f);
+         Range range = new Range(low, high, 0, zoomY);
 
-         Rectangle rect = new Rectangle(fromX, 0, zoomX, zoomY);
-
-         waveform.updatePixmap(rect);
-         spectrum.updatePixmap(rect);
-         // pixmapChannel2.updatePixmap(rect);
+         waveform.updatePixmap(range, np);
+         spectrum.updatePixmap(range, np);
       }
 
       player.update();

@@ -174,4 +174,8 @@ public class MusicPlayer extends Table {
    public int getPosition() {
       return position;
    }
+
+   public double getNormalizedPosition() {
+      return (double) position / (double) soundData.length;
+   }
 }
