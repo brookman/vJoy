@@ -8,6 +8,7 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 
 import eu32k.vJoy.curveEditor.audio.AudioTrack;
+import eu32k.vJoy.curveEditor.misc.ArrayTools;
 import eu32k.vJoy.curveEditor.misc.FloatArray;
 
 public class SpectrumPixmap extends Pixmap {
@@ -22,17 +23,15 @@ public class SpectrumPixmap extends Pixmap {
 
    private short[] allSamples;
 
-   private boolean gauss = true;
    private double max = 1;
    private double maxEnergy = 1;
 
    private AudioTrack track;
 
-   public SpectrumPixmap(int width, int height, AudioTrack track, boolean gauss) {
+   public SpectrumPixmap(int width, int height, AudioTrack track) {
       super(width, height, Format.RGBA8888);
       this.track = track;
       allSamples = track.getCombined();
-      this.gauss = gauss;
    }
 
    public synchronized void updatePixmap(final Rectangle area) {
@@ -77,14 +76,8 @@ public class SpectrumPixmap extends Pixmap {
 
          short[] range = track.getRange(fromX, toX);
 
-         if (gauss) {
-            for (int r = 0; r < range.length; r++) {
-               double x = (double) r / (double) range.length * 4.0 - 2.0;
-               double d = range[r];
-               d *= Math.exp(-1.0 * (x * x));
-               range[r] = (short) d;
-            }
-         }
+         ArrayTools.applyGauss(range, 16.0);
+
          fft.spectrum(range, spectrum);
          FloatArray na = new FloatArray(spectrum);
          double energy = na.sum();
@@ -136,6 +129,12 @@ public class SpectrumPixmap extends Pixmap {
       double fadeoff = 0.1;
       double brightness = normalized < fadeoff ? normalized * (1.0 / fadeoff) : 1.0;
 
-      return Color.HSBtoRGB((1.0f - (float) normalized) * 0.75f, 1.0f, (float) brightness); // cutoff at 0.75 because hue is "circular"
+      return Color.HSBtoRGB((1.0f - (float) normalized) * 0.75f, 1.0f, (float) brightness); // cutoff
+                                                                                            // at
+                                                                                            // 0.75
+                                                                                            // because
+                                                                                            // hue
+                                                                                            // is
+                                                                                            // "circular"
    }
 }

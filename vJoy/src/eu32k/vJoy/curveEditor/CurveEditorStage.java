@@ -43,7 +43,7 @@ public class CurveEditorStage extends Stage {
       device = Gdx.audio.newAudioDevice(track.getRate(), track.isMono());
       player = new MusicPlayer(device, track);
       waveform = new WaveformPixmap(1920, 1080, track);
-      spectrum = new SpectrumPixmap(1920, 1080, track, true);
+      spectrum = new SpectrumPixmap(1920, 1080, track);
 
       Table table = new Table();
       table.setFillParent(true);
@@ -68,11 +68,12 @@ public class CurveEditorStage extends Stage {
 
       table.add(player).colspan(2).fillX().expandX().pad(5);
       table.row();
-      table.add(new PixmapWidget(waveform)).colspan(2).fill().expand().pad(5);
+      table.add(new PixmapWidget(waveform)).colspan(2).fill().height(200).pad(5);
       table.row();
       table.add(new PixmapWidget(spectrum)).colspan(2).fill().expand().pad(5);
       // table.row();
-      // table.add(new PixmapWidget(pixmapChannel2)).colspan(2).fill().expand().pad(5);
+      // table.add(new
+      // PixmapWidget(pixmapChannel2)).colspan(2).fill().expand().pad(5);
       table.row();
       table.add(new Label("Zoom X:", VJoyMain.SKIN)).left().pad(5);
       table.add(zoomSliderX).fillX().expandX().pad(5);

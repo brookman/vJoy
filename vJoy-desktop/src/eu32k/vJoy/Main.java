@@ -35,7 +35,9 @@ public class Main {
       cfg.width = width;
       cfg.height = height;
 
-      String path = "C:/setfos_ws/vJoy/vJoy-android/assets/sound/orca.mp3";
+      String path = new File("../vJoy-android/assets/sound/orca.mp3").getAbsolutePath();
+      // String path = new
+      // File("F:/sound/2011/Airi_-_Smyle-(2011)-UPE/03-airi_-_rainbox-upe.mp3").getAbsolutePath();
       JFileChooser chooser = new JFileChooser();
       chooser.setFileFilter(new FileFilter() {
          @Override
@@ -48,9 +50,9 @@ public class Main {
             return f.isDirectory() || f.getAbsolutePath().toLowerCase().endsWith(".mp3");
          }
       });
-      if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
-         path = chooser.getSelectedFile().getAbsolutePath();
-      }
+      // if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+      // path = chooser.getSelectedFile().getAbsolutePath();
+      // }
 
       VJoyMain vjoy1 = new VJoyMain(height, path);
       // VJoyMain vjoy2 = new VJoyMain();
