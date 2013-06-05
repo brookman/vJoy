@@ -12,6 +12,7 @@ import eu32k.vJoy.curveEditor.misc.Range;
 public class SpectrumPixmap extends ExtendedPixmap {
 
    private short[] allSamples;
+   private float[][] processed;
 
    private double max = 1;
    private double maxEnergy = 1;
@@ -19,6 +20,20 @@ public class SpectrumPixmap extends ExtendedPixmap {
    public SpectrumPixmap(int width, int height, AudioTrack track) {
       super(width, height, track, 8);
       allSamples = track.getCombined();
+
+      processed = new float[allSamples.length / 200][400];
+      float[] spectrum = new float[SAMPLES / 2];
+
+      for (int i = 0; i < allSamples.length / 200; i++) {
+         int pos = i * 200;
+         short[] rangeArray = AudioTrack.getRange(track.getCombined(), i, i + SAMPLES, SAMPLES);
+         ArrayTools.applyGauss(rangeArray, 16.0);
+         fft.spectrum(rangeArray, spectrum);
+         processed[i] = new float[400];
+         if (Math.random() < 0.001) {
+            System.out.println(i + " of " + allSamples.length / 200);
+         }
+      }
    }
 
    @Override
