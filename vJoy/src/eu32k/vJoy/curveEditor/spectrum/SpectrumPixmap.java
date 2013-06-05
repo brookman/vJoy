@@ -18,26 +18,91 @@ public class SpectrumPixmap extends ExtendedPixmap {
    private double maxEnergy = 1;
 
    public SpectrumPixmap(int width, int height, AudioTrack track) {
-      super(width, height, track, 8);
+      super(width, height, track, 1);
       allSamples = track.getCombined();
 
-      processed = new float[allSamples.length / 200][400];
+      int reduction = 128;
+
+      int size = allSamples.length / reduction;
+
+      processed = new float[size][1024];
       float[] spectrum = new float[SAMPLES / 2];
 
-      for (int i = 0; i < allSamples.length / 200; i++) {
-         int pos = i * 200;
-         short[] rangeArray = AudioTrack.getRange(track.getCombined(), i, i + SAMPLES, SAMPLES);
+      for (int i = 0; i < size; i++) {
+         int pos = i * reduction;
+         int from = pos - SAMPLES / 2;
+         int to = pos + SAMPLES / 2;
+         if (from < 0) {
+            from = 0;
+            to = SAMPLES;
+         }
+         if (to >= track.getCombined().length) {
+            from = track.getCombined().length - 1 - SAMPLES;
+            to = track.getCombined().length - 1;
+         }
+         short[] rangeArray = AudioTrack.getRange(track.getCombined(), from, to, SAMPLES);
          ArrayTools.applyGauss(rangeArray, 16.0);
          fft.spectrum(rangeArray, spectrum);
-         processed[i] = new float[400];
+         for (int j = 0; j < 1024; j++) {
+            processed[i][j] = spectrum[j];
+         }
          if (Math.random() < 0.001) {
-            System.out.println(i + " of " + allSamples.length / 200);
+            System.out.println(i + " of " + size);
          }
       }
    }
 
    @Override
    protected void update(Range range, float position, int pass) {
+      for (int i = 0; i < getWidth(); i++) {
+         if (cancel) {
+            return;
+         }
+
+         double normalizedPositionInSubRangeX = (double) i / (double) getWidth();
+         double normalizedPositionInGlobalRangeX = range.fromX + range.getSizeX() * normalizedPositionInSubRangeX;
+
+         int posX = (int) Math.round(normalizedPositionInGlobalRangeX * processed.length);
+         float[] col = processed[posX];
+
+         for (int j = 0; j < col.length - 1; j++) {
+
+            double magnitude = Math.sqrt(col[j] * col[j] + col[j + 1] + col[j + 1]);
+
+            max = Math.max(max, magnitude);
+
+            setColor(0x000000ff | getColor(magnitude / (max * 1.0)) << 8);
+            drawPixel(i, getHeight() - j);
+         }
+
+         // int hPos = 30;
+         //
+         // double lowMagnitude = Math.sqrt(spectrum[hPos] * spectrum[hPos] +
+         // spectrum[hPos + 1] + spectrum[hPos + 1]) / 300.0;
+         //
+         // float m = MathUtils.clamp((float) lowMagnitude, 0.0f, 1.0f);
+         // int h = MathUtils.round(getHeight() * m);
+         //
+         // setColor(0xffffffaa);
+         // fillRectangle(i, getHeight() - h, 1, h);
+         //
+         // if (m > 0.5) {
+         // setColor(0xff0000aa);
+         // // fillRectangle(i, getHeight() - h, 1, h);
+         // fillRectangle(i, 0, 1, getHeight());
+         // }
+
+         setChanged(true);
+      }
+
+      int x = MathUtils.round((position - range.fromX) / range.getSizeX() * getWidth());
+      setColor(0xffffffff);
+      for (int j = 0; j < getHeight(); j++) {
+         drawPixel(x, j);
+      }
+   }
+
+   protected void update2(Range range, float position, int pass) {
 
       float[] spectrum = new float[SAMPLES / 2];
 
