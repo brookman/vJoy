@@ -19,6 +19,16 @@ public class FloatArray {
       return array[index];
    }
 
+   public float sum(float from, float to) {
+      int fromInt = MathUtils.round(from * array.length);
+      int toInt = MathUtils.round(to * array.length);
+      float sum = 0;
+      for (int i = fromInt; i < toInt; i++) {
+         sum += array[i];
+      }
+      return sum;
+   }
+
    public float sum() {
       float sum = 0;
       for (int i = 0; i < array.length; i++) {

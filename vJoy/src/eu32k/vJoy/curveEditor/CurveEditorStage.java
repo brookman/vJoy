@@ -33,7 +33,11 @@ public class CurveEditorStage extends Stage {
 
    private Slider zoomSliderX;
    private Slider zoomSliderY;
+   private Slider scaleSliderZ;
+   private Slider levelSlider;
+   private Slider threshSlider;
 
+   private boolean redraw = true;
    private float zoomX = 0.1f;
    private float zoomY = 0.1f;
    private Rectangle zoomRange = new Rectangle(0.003f, 0.03f, 1.0f, 1.0f);
@@ -44,8 +48,8 @@ public class CurveEditorStage extends Stage {
 
       device = Gdx.audio.newAudioDevice(track.getRate(), track.isMono());
       player = new MusicPlayer(device, track);
-      waveform = new WaveformPixmap(1920, 1080, track);
-      spectrum = new SpectrumPixmap(1920, 1080, track);
+      waveform = new WaveformPixmap(1920, 800, track);
+      spectrum = new SpectrumPixmap(1920, 800, track);
 
       Table table = new Table();
       table.setFillParent(true);
@@ -68,20 +72,56 @@ public class CurveEditorStage extends Stage {
          }
       });
 
+      scaleSliderZ = new Slider(0.1f, 2.0f, 0.0001f, false, VJoyMain.SKIN);
+      scaleSliderZ.setValue(spectrum.scaleZ);
+      scaleSliderZ.addListener(new ChangeListener() {
+         @Override
+         public void changed(ChangeEvent event, Actor actor) {
+            spectrum.scaleZ = scaleSliderZ.getValue();
+            redraw = true;
+         }
+      });
+
+      levelSlider = new Slider(0.0f, 1.0f, 0.0001f, false, VJoyMain.SKIN);
+      levelSlider.setValue(spectrum.level);
+      levelSlider.addListener(new ChangeListener() {
+         @Override
+         public void changed(ChangeEvent event, Actor actor) {
+            spectrum.level = levelSlider.getValue();
+            redraw = true;
+         }
+      });
+
+      threshSlider = new Slider(0.0f, 1.0f, 0.0001f, false, VJoyMain.SKIN);
+      threshSlider.setValue(spectrum.threshold);
+      threshSlider.addListener(new ChangeListener() {
+         @Override
+         public void changed(ChangeEvent event, Actor actor) {
+            spectrum.threshold = threshSlider.getValue();
+            redraw = true;
+         }
+      });
+
       table.add(player).colspan(2).fillX().expandX().pad(5);
       table.row();
-      table.add(new PixmapWidget(waveform)).colspan(2).fill().height(200).pad(5);
+      table.add(new PixmapWidget(waveform)).colspan(2).fill().height(100).pad(5);
       table.row();
       table.add(new PixmapWidget(spectrum)).colspan(2).fill().expand().pad(5);
-      // table.row();
-      // table.add(new
-      // PixmapWidget(pixmapChannel2)).colspan(2).fill().expand().pad(5);
       table.row();
       table.add(new Label("Zoom X:", VJoyMain.SKIN)).left().pad(5);
       table.add(zoomSliderX).fillX().expandX().pad(5);
+      // table.row();
+      // table.add(new Label("Zoom Y:", VJoyMain.SKIN)).left().pad(5);
+      // table.add(zoomSliderY).fillX().expandX().pad(5);
       table.row();
-      table.add(new Label("Zoom Y:", VJoyMain.SKIN)).left().pad(5);
-      table.add(zoomSliderY).fillX().expandX().pad(5);
+      table.add(new Label("Scale Z:", VJoyMain.SKIN)).left().pad(5);
+      table.add(scaleSliderZ).fillX().expandX().pad(5);
+      table.row();
+      table.add(new Label("Level:", VJoyMain.SKIN)).left().pad(5);
+      table.add(levelSlider).fillX().expandX().pad(5);
+      table.row();
+      table.add(new Label("Threshold:", VJoyMain.SKIN)).left().pad(5);
+      table.add(threshSlider).fillX().expandX().pad(5);
 
       addActor(table);
 
@@ -112,28 +152,26 @@ public class CurveEditorStage extends Stage {
 
    private void setZoomX(float zoomX) {
       this.zoomX = MathUtils.clamp(zoomX, zoomRange.x, zoomRange.width);
+      redraw = true;
    }
 
    private void setZoomY(float zoomY) {
       this.zoomY = MathUtils.clamp(zoomY, zoomRange.y, zoomRange.height);
+      redraw = true;
    }
 
-   boolean updated = false;
    private float lastPosition = -1;
-   private float lastZoomX = -1;
-   private float lastZoomY = -1;
 
    @Override
    public void draw() {
       KeyPressEvent.update();
 
       float np = (float) player.getNormalizedPosition();
-      if (lastPosition != np || lastZoomX != zoomX || lastZoomY != zoomY) {
-         System.out.println("zoom x " + zoomX);
+      if (lastPosition != np) {
          lastPosition = np;
-         lastZoomX = zoomX;
-         lastZoomY = zoomY;
-
+         redraw = true;
+      }
+      if (redraw) {
          float low = np - zoomX / 2.0f;
          float high = np + zoomX / 2.0f;
          if (low < 0) {
@@ -148,6 +186,7 @@ public class CurveEditorStage extends Stage {
 
          waveform.updatePixmap(range, np);
          spectrum.updatePixmap(range, np);
+         redraw = false;
       }
 
       player.update();
