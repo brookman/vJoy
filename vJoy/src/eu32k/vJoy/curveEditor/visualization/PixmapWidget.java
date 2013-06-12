@@ -1,9 +1,10 @@
-package eu32k.vJoy.curveEditor.spectrum;
+package eu32k.vJoy.curveEditor.visualization;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.ui.Widget;
+
 
 public class PixmapWidget extends Widget {
 

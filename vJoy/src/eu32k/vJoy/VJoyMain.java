@@ -5,6 +5,8 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
+import eu32k.common.net.BroadcastAddress;
+import eu32k.vJoy.architect.ArchitectStage;
 import eu32k.vJoy.common.Tools;
 import eu32k.vJoy.curveEditor.CurveEditorStage;
 import eu32k.vJoy.screen.ScreenStage;
@@ -49,12 +51,10 @@ public class VJoyMain extends App2D {
    public void create() {
       SKIN = new Skin(Gdx.files.internal("data/uiskin.json"));
 
-      // mainMenuStage = new MainMenuStage(this);
-      // architectStage = new ArchitectStage();
+      mainMenuStage = new MainMenuStage(this);
       screenStage = new ScreenStage();
-      curveEditorStage = new CurveEditorStage(filePath);
 
-      changeStage(curveEditorStage);
+      changeStage(mainMenuStage);
    }
 
    // public void createController(String name, BroadcastAddress address) {
@@ -103,8 +103,18 @@ public class VJoyMain extends App2D {
       }
    }
 
-   public void showArchitect() {
+   public void showArchitect(BroadcastAddress addr) {
+      if (architectStage == null) {
+         architectStage = new ArchitectStage(addr);
+      }
       changeStage(architectStage);
+   }
+
+   public void showCurveEditor(BroadcastAddress addr) {
+      if (curveEditorStage == null) {
+         curveEditorStage = new CurveEditorStage(filePath, addr);
+      }
+      changeStage(curveEditorStage);
    }
 
    public void showScreen() {

@@ -1,16 +1,14 @@
-package eu32k.vJoy.curveEditor.spectrum;
+package eu32k.vJoy.curveEditor.visualization;
 
 import com.badlogic.gdx.audio.analysis.KissFFT;
 import com.badlogic.gdx.graphics.Pixmap;
 
-import eu32k.vJoy.curveEditor.audio.AudioTrack;
 import eu32k.vJoy.curveEditor.misc.Range;
 
 public abstract class ExtendedPixmap extends Pixmap {
 
    public final static int SAMPLES = 4096 * 2;
 
-   protected AudioTrack track;
    protected KissFFT fft = new KissFFT(SAMPLES);
    protected int passes = 1;
    protected boolean cancel = false;
@@ -19,14 +17,13 @@ public abstract class ExtendedPixmap extends Pixmap {
    private boolean isUpdating = false;
    private boolean changed = false;
 
-   public ExtendedPixmap(int width, int height, AudioTrack track, int passes) {
-      this(width, height, track);
+   public ExtendedPixmap(int width, int height, int passes) {
+      this(width, height);
       this.passes = passes;
    }
 
-   public ExtendedPixmap(int width, int height, AudioTrack track) {
+   public ExtendedPixmap(int width, int height) {
       super(width, height, Format.RGBA8888);
-      this.track = track;
    }
 
    public synchronized void updatePixmap(final Range range, final float position) {

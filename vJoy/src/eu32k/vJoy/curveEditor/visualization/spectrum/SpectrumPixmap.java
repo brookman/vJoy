@@ -1,24 +1,24 @@
-package eu32k.vJoy.curveEditor.spectrum;
+package eu32k.vJoy.curveEditor.visualization.spectrum;
 
 import java.io.File;
 
 import com.badlogic.gdx.math.MathUtils;
 
-import eu32k.vJoy.curveEditor.audio.AudioTrack;
 import eu32k.vJoy.curveEditor.misc.Range;
+import eu32k.vJoy.curveEditor.visualization.ExtendedPixmap;
 
 public class SpectrumPixmap extends ExtendedPixmap {
 
-   private Spectrum spectrum;
+   public Spectrum spectrum;
    private ColorGradient color;
    public float scaleZ = 1.0f;
    public float level = 0.02f;
    public float threshold = 0.5f;
 
-   public SpectrumPixmap(int width, int height, AudioTrack track) {
-      super(width, height, track, 1);
+   public SpectrumPixmap(int width, int height, short[] samples) {
+      super(width, height, 1);
 
-      spectrum = new Spectrum(track.getCombined(), SAMPLES, 128);
+      spectrum = new Spectrum(samples, SAMPLES, 128);
       color = new ColorGradient(0.0, 1.0, 0.1);
 
       File specFile = new File("orca.spec");

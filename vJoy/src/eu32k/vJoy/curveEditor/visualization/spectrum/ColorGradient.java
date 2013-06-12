@@ -1,4 +1,4 @@
-package eu32k.vJoy.curveEditor.spectrum;
+package eu32k.vJoy.curveEditor.visualization.spectrum;
 
 import java.awt.Color;
 

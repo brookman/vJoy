@@ -1,13 +1,18 @@
-package eu32k.vJoy.curveEditor.spectrum;
+package eu32k.vJoy.curveEditor.visualization.waveform;
 
-import eu32k.vJoy.curveEditor.audio.AudioTrack;
 import eu32k.vJoy.curveEditor.misc.ArrayTools;
 import eu32k.vJoy.curveEditor.misc.Range;
+import eu32k.vJoy.curveEditor.visualization.ExtendedPixmap;
 
 public class WaveformPixmap extends ExtendedPixmap {
 
-   public WaveformPixmap(int width, int height, AudioTrack track) {
-      super(width, height, track);
+   private short[] channel1;
+   private short[] channel2;
+
+   public WaveformPixmap(int width, int height, short[] channel1, short[] channel2) {
+      super(width, height);
+      this.channel1 = channel1;
+      this.channel2 = channel2;
    }
 
    @Override
@@ -24,8 +29,8 @@ public class WaveformPixmap extends ExtendedPixmap {
          double normalizedPositionInSubRangeX = (double) i / (double) getWidth();
          double normalizedPositionInGlobalRangeX = range.fromX + range.getSizeX() * normalizedPositionInSubRangeX;
 
-         short value1 = ArrayTools.getNormalizedValue(track.getChannel1(), normalizedPositionInGlobalRangeX);
-         short value2 = ArrayTools.getNormalizedValue(track.getChannel2(), normalizedPositionInGlobalRangeX);
+         short value1 = ArrayTools.getNormalizedValue(channel1, normalizedPositionInGlobalRangeX);
+         short value2 = ArrayTools.getNormalizedValue(channel2, normalizedPositionInGlobalRangeX);
 
          int h1 = (int) Math.round((double) value1 / (double) Short.MAX_VALUE * getHeight() * 0.5);
          int h2 = (int) Math.round((double) value2 / (double) Short.MAX_VALUE * getHeight() * 0.5);

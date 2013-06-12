@@ -13,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.SelectBox;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 
+import eu32k.common.net.BroadcastAddress;
 import eu32k.vJoy.VJoyMain;
 import eu32k.vJoy.common.Colors;
 import eu32k.vJoy.common.workset.DataType;
@@ -35,7 +36,7 @@ public class ArchitectStage extends Stage {
 
    private Object lock = new Object();
 
-   public ArchitectStage(/* NetworkModule net */) {
+   public ArchitectStage(BroadcastAddress addr) {
       // this.net = net;
       rend = new ShapeRenderer();
 

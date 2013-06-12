@@ -1,4 +1,4 @@
-package eu32k.vJoy.curveEditor.spectrum;
+package eu32k.vJoy.curveEditor.visualization.spectrum;
 
 import java.io.File;
 
@@ -81,6 +81,15 @@ public class Spectrum {
 
    public float[][] getSpectrum() {
       return spectrum;
+   }
+
+   public float[] getMagnitudeAt(float y) {
+      int posY = MathUtils.clamp(Math.round(y * SIZE_Y - 1), 0, SIZE_Y - 1);
+      float[] data = new float[spectrum.length];
+      for (int i = 0; i < data.length; i++) {
+         data[i] = spectrum[i][posY];
+      }
+      return data;
    }
 
    public float getMagnitudeAt(float x, float y) {

@@ -12,13 +12,18 @@ import com.badlogic.gdx.scenes.scene2d.ui.Slider;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 
+import eu32k.common.net.BroadcastAddress;
+import eu32k.common.net.PeerToPeerClient;
+import eu32k.vJoy.ClientTypes;
 import eu32k.vJoy.VJoyMain;
 import eu32k.vJoy.curveEditor.audio.AudioTrack;
+import eu32k.vJoy.curveEditor.audio.MusicPlayer;
 import eu32k.vJoy.curveEditor.misc.KeyPressEvent;
 import eu32k.vJoy.curveEditor.misc.Range;
-import eu32k.vJoy.curveEditor.spectrum.PixmapWidget;
-import eu32k.vJoy.curveEditor.spectrum.SpectrumPixmap;
-import eu32k.vJoy.curveEditor.spectrum.WaveformPixmap;
+import eu32k.vJoy.curveEditor.visualization.PixmapWidget;
+import eu32k.vJoy.curveEditor.visualization.curve.CurvePixmap;
+import eu32k.vJoy.curveEditor.visualization.spectrum.SpectrumPixmap;
+import eu32k.vJoy.curveEditor.visualization.waveform.WaveformPixmap;
 
 public class CurveEditorStage extends Stage {
 
@@ -27,7 +32,7 @@ public class CurveEditorStage extends Stage {
 
    private WaveformPixmap waveform;
    private SpectrumPixmap spectrum;
-   // private SpectrumPixmap pixmapChannel2;
+   private CurvePixmap curve;
 
    private MusicPlayer player;
 
@@ -42,14 +47,22 @@ public class CurveEditorStage extends Stage {
    private float zoomY = 0.1f;
    private Rectangle zoomRange = new Rectangle(0.003f, 0.03f, 1.0f, 1.0f);
 
-   public CurveEditorStage(String filePath) {
+   private PeerToPeerClient net;
+
+   public CurveEditorStage(String filePath, BroadcastAddress address) {
+
+      net = new PeerToPeerClient(address, ClientTypes.TYPE_CONTROLLER);
+
+      net.sendToTypeUdp(ClientTypes.TYPE_ARCHITECT, new Float(0.5f));
 
       track = new AudioTrack(Gdx.files.absolute(filePath));
 
       device = Gdx.audio.newAudioDevice(track.getRate(), track.isMono());
       player = new MusicPlayer(device, track);
-      waveform = new WaveformPixmap(1920, 800, track);
-      spectrum = new SpectrumPixmap(1920, 800, track);
+      waveform = new WaveformPixmap(1920, 800, track.getChannel1(), track.getChannel2());
+      spectrum = new SpectrumPixmap(1920, 800, track.getCombined());
+
+      curve = new CurvePixmap(1920, 800);
 
       Table table = new Table();
       table.setFillParent(true);
@@ -88,6 +101,7 @@ public class CurveEditorStage extends Stage {
          @Override
          public void changed(ChangeEvent event, Actor actor) {
             spectrum.level = levelSlider.getValue();
+            regenerate();
             redraw = true;
          }
       });
@@ -98,6 +112,7 @@ public class CurveEditorStage extends Stage {
          @Override
          public void changed(ChangeEvent event, Actor actor) {
             spectrum.threshold = threshSlider.getValue();
+            regenerate();
             redraw = true;
          }
       });
@@ -107,6 +122,8 @@ public class CurveEditorStage extends Stage {
       table.add(new PixmapWidget(waveform)).colspan(2).fill().height(100).pad(5);
       table.row();
       table.add(new PixmapWidget(spectrum)).colspan(2).fill().expand().pad(5);
+      table.row();
+      table.add(new PixmapWidget(curve)).colspan(2).fill().expand().pad(5);
       table.row();
       table.add(new Label("Zoom X:", VJoyMain.SKIN)).left().pad(5);
       table.add(zoomSliderX).fillX().expandX().pad(5);
@@ -141,6 +158,10 @@ public class CurveEditorStage extends Stage {
             }
          }
       };
+   }
+
+   private void regenerate() {
+      curve.setData(spectrum.spectrum.getMagnitudeAt(spectrum.level), spectrum.spectrum.getMax());
    }
 
    @Override
@@ -186,6 +207,7 @@ public class CurveEditorStage extends Stage {
 
          waveform.updatePixmap(range, np);
          spectrum.updatePixmap(range, np);
+         curve.updatePixmap(range, np);
          redraw = false;
       }
 

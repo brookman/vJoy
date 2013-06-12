@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 
+import eu32k.common.net.BroadcastAddress;
 import eu32k.common.net.PeerToPeerClient;
 import eu32k.vJoy.common.Colors;
 
@@ -34,6 +35,10 @@ public class MainMenuStage extends Stage {
       architectButton.setColor(Colors.DARK_YELLOW);
       TextButton screenButton = new TextButton("Screen [disabled]", VJoyMain.SKIN);
       screenButton.setColor(Colors.DARK_YELLOW);
+
+      TextButton curveButton = new TextButton("Curve editor", VJoyMain.SKIN);
+      curveButton.setColor(Colors.DARK_YELLOW);
+
       TextButton debugButton = new TextButton("Debug [disabled]", VJoyMain.SKIN);
       debugButton.setColor(Colors.DARK_YELLOW);
 
@@ -51,6 +56,8 @@ public class MainMenuStage extends Stage {
       table.row();
       table.add(screenButton).colspan(2).fill().pad(5);
       table.row();
+      table.add(curveButton).colspan(2).fill().pad(5);
+      table.row();
       table.add(debugButton).colspan(2).fill().pad(5);
       addActor(table);
 
@@ -67,10 +74,7 @@ public class MainMenuStage extends Stage {
       architectButton.addListener(new InputListener() {
          @Override
          public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-            // MainMenuStage.vJoy.createArchitect(deviceName.getText(),
-            // (BroadcastAddress)
-            // addresses[broadcastSelection.getSelectionIndex()]);
-            MainMenuStage.this.vJoy.showArchitect();
+            MainMenuStage.this.vJoy.showArchitect((BroadcastAddress) addresses[broadcastSelection.getSelectionIndex()]);
             return false;
          }
       });
@@ -78,10 +82,15 @@ public class MainMenuStage extends Stage {
       screenButton.addListener(new InputListener() {
          @Override
          public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-            // MainMenuStage.vJoy.createScreen(deviceName.getText(),
-            // (BroadcastAddress)
-            // addresses[broadcastSelection.getSelectionIndex()]);
-            // MainMenuStage.this.vJoy.showScreen();
+
+            return false;
+         }
+      });
+
+      curveButton.addListener(new InputListener() {
+         @Override
+         public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+            MainMenuStage.this.vJoy.showCurveEditor((BroadcastAddress) addresses[broadcastSelection.getSelectionIndex()]);
             return false;
          }
       });
@@ -89,9 +98,6 @@ public class MainMenuStage extends Stage {
       debugButton.addListener(new InputListener() {
          @Override
          public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-            // MainMenuStage.vJoy.createDebug(deviceName.getText(),
-            // (BroadcastAddress)
-            // addresses[broadcastSelection.getSelectionIndex()]);
             return false;
          }
       });

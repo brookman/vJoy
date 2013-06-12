@@ -27,17 +27,15 @@ public class AudioTrack {
          channel1 = new short[all.length / 2];
          channel2 = new short[all.length / 2];
          combined = new short[all.length / 2];
-      }
 
-      for (int i = 0; i < channel1.length; i++) {
-         short c1 = all[i * 2];
-         short c2 = all[i * 2 + 1];
-         channel1[i] = c1;
-         channel2[i] = c2;
-         combined[i] = (short) Math.max(c1, c2);
+         for (int i = 0; i < channel1.length; i++) {
+            short c1 = all[i * 2];
+            short c2 = all[i * 2 + 1];
+            channel1[i] = c1;
+            channel2[i] = c2;
+            combined[i] = (short) Math.max(c1, c2);
+         }
       }
-      System.out.println("size " + combined.length);
-
    }
 
    public boolean isMono() {

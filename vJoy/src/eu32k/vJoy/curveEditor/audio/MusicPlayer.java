@@ -1,4 +1,4 @@
-package eu32k.vJoy.curveEditor;
+package eu32k.vJoy.curveEditor.audio;
 
 import java.text.DecimalFormat;
 import java.util.Arrays;
@@ -15,7 +15,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 
 import eu32k.vJoy.VJoyMain;
-import eu32k.vJoy.curveEditor.audio.AudioTrack;
 
 public class MusicPlayer extends Table {
 
