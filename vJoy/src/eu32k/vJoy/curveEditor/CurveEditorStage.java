@@ -18,12 +18,14 @@ import eu32k.vJoy.ClientTypes;
 import eu32k.vJoy.VJoyMain;
 import eu32k.vJoy.curveEditor.audio.AudioTrack;
 import eu32k.vJoy.curveEditor.audio.MusicPlayer;
+import eu32k.vJoy.curveEditor.misc.ArrayTools;
 import eu32k.vJoy.curveEditor.misc.KeyPressEvent;
 import eu32k.vJoy.curveEditor.misc.Range;
 import eu32k.vJoy.curveEditor.visualization.PixmapWidget;
 import eu32k.vJoy.curveEditor.visualization.curve.CurvePixmap;
 import eu32k.vJoy.curveEditor.visualization.spectrum.SpectrumPixmap;
 import eu32k.vJoy.curveEditor.visualization.waveform.WaveformPixmap;
+import eu32k.vJoy.net.ControllerValue;
 
 public class CurveEditorStage extends Stage {
 
@@ -52,10 +54,18 @@ public class CurveEditorStage extends Stage {
    public CurveEditorStage(String filePath, BroadcastAddress address) {
 
       net = new PeerToPeerClient(address, ClientTypes.TYPE_CONTROLLER);
-
-      net.sendToTypeUdp(ClientTypes.TYPE_ARCHITECT, new Float(0.5f));
+      net.register(ControllerValue.class);
+      net.start();
 
       track = new AudioTrack(Gdx.files.absolute(filePath));
+      while (!track.getFinished()) {
+         try {
+            Thread.sleep(1);
+         } catch (InterruptedException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+         }
+      }
 
       device = Gdx.audio.newAudioDevice(track.getRate(), track.isMono());
       player = new MusicPlayer(device, track);
@@ -158,6 +168,30 @@ public class CurveEditorStage extends Stage {
             }
          }
       };
+
+      new Thread(new Runnable() {
+
+         @Override
+         public void run() {
+            while (true) {
+               float np = (float) player.getNormalizedPosition();
+
+               ControllerValue value = new ControllerValue();
+               float[] array = spectrum.spectrum.getMagnitudeAt(spectrum.level);
+               value.value = MathUtils.clamp(ArrayTools.getNormalizedValue(array, np) / spectrum.spectrum.getMax(), 0.0f, 1.0f);
+               if (value.value < spectrum.threshold) {
+                  value.value = 0;
+               }
+               net.sendToTypeUdp(ClientTypes.TYPE_ARCHITECT, value);
+               try {
+                  Thread.sleep(10);
+               } catch (InterruptedException e) {
+                  // TODO Auto-generated catch block
+                  e.printStackTrace();
+               }
+            }
+         }
+      }).start();
    }
 
    private void regenerate() {

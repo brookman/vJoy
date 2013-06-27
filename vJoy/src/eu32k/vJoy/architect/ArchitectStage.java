@@ -12,8 +12,12 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.SelectBox;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.esotericsoftware.kryonet.Connection;
+import com.esotericsoftware.kryonet.Listener;
 
 import eu32k.common.net.BroadcastAddress;
+import eu32k.common.net.PeerToPeerClient;
+import eu32k.vJoy.ClientTypes;
 import eu32k.vJoy.VJoyMain;
 import eu32k.vJoy.common.Colors;
 import eu32k.vJoy.common.workset.DataType;
@@ -21,10 +25,11 @@ import eu32k.vJoy.common.workset.Instance;
 import eu32k.vJoy.common.workset.Port;
 import eu32k.vJoy.common.workset.Type;
 import eu32k.vJoy.common.workset.Workset;
+import eu32k.vJoy.common.workset.atomic.number.MidiNumber.MidiInstance;
+import eu32k.vJoy.net.ControllerValue;
 
 public class ArchitectStage extends Stage {
 
-   // private NetworkModule net;
    private ShapeRenderer rend;
 
    private Workset workset = Workset.getInstance();
@@ -36,8 +41,11 @@ public class ArchitectStage extends Stage {
 
    private Object lock = new Object();
 
-   public ArchitectStage(BroadcastAddress addr) {
-      // this.net = net;
+   private PeerToPeerClient net;
+
+   public ArchitectStage(BroadcastAddress address) {
+      net = new PeerToPeerClient(address, ClientTypes.TYPE_ARCHITECT);
+
       rend = new ShapeRenderer();
 
       Table table = new Table();
@@ -192,6 +200,20 @@ public class ArchitectStage extends Stage {
 
       // net.addNetworkListener(this);
       // net.start();
+
+      net.register(ControllerValue.class);
+
+      net.addListener(new Listener() {
+         @Override
+         public void received(Connection connection, Object object) {
+            if (object instanceof ControllerValue) {
+               ControllerValue value = (ControllerValue) object;
+               MidiInstance midi = (MidiInstance) workset.getInstances().get(0);
+               midi.value = value.value;
+            }
+         }
+      });
+      net.start();
    }
 
    @Override

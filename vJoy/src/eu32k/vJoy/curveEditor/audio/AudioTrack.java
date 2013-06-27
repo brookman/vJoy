@@ -3,7 +3,11 @@ package eu32k.vJoy.curveEditor.audio;
 import com.badlogic.gdx.audio.io.Mpg123Decoder;
 import com.badlogic.gdx.files.FileHandle;
 
-public class AudioTrack {
+import eu32k.vJoy.common.Task;
+
+public class AudioTrack extends Task {
+
+   private Mpg123Decoder decoder;
    private int rate;
    private boolean mono;
 
@@ -12,12 +16,26 @@ public class AudioTrack {
    private short[] channel2;
    private short[] combined;
 
+   private int pos = 0;
+
    public AudioTrack(FileHandle fileHandle) {
-      Mpg123Decoder decoder = new Mpg123Decoder(fileHandle);
+      super("Reading audio track");
+
+      decoder = new Mpg123Decoder(fileHandle);
       rate = decoder.getRate();
       mono = decoder.getChannels() == 1;
+      start();
+   }
+
+   @Override
+   protected boolean step() {
       all = decoder.readAllSamples();
-      decoder.dispose();
+      System.out.println("length  " + all.length);
+      double len2 = (double) decoder.getChannels() * (double) (decoder.getLength() + 1) * decoder.getRate();
+      System.out.println("length2 " + (int) len2);
+
+      double len3 = (double) decoder.getChannels() * (double) decoder.getLength() * decoder.getRate();
+      System.out.println("length3 " + (int) len3);
 
       if (mono) {
          channel1 = all;
@@ -36,6 +54,10 @@ public class AudioTrack {
             combined[i] = (short) Math.max(c1, c2);
          }
       }
+
+      // finished
+      decoder.dispose();
+      return false;
    }
 
    public boolean isMono() {
@@ -76,5 +98,4 @@ public class AudioTrack {
    public short[] getRange(int from, int to, int size) {
       return getRange(combined, from, to, size);
    }
-
 }
