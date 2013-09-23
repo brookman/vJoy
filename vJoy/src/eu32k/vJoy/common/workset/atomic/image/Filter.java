@@ -12,7 +12,7 @@ import eu32k.vJoy.common.workset.atomic.ImageType;
 public class Filter extends ImageType {
 
    public static enum FilterType {
-      GRAY_SCALE("gray"), INVERT("invert"), BLUR_H("blur_h"), BLUR_V("blur_v"), FLY("fly"), PULSE("pulse"), STAR("star"), KALEIDOSCOPE("kaleidoscope");
+      GRAY_SCALE("gray"), INVERT("invert"), BLUR_H("blur_h"), BLUR_V("blur_v"), FLY("fly"), PULSE("pulse"), STAR("star"), KALEIDOSCOPE("kaleidoscope"), ASCII("ascii");
 
       private AdvancedShader shader;
 

@@ -1,0 +1,53 @@
+void main(void){
+	
+	float time = fract(iGlobalTime / 4.0) * 6.0;
+	vec2 pos;
+	float radius = 30.0;
+	float c = 1.0;
+	
+	radius -= smoothstep(0.0, 0.4, time) * 7.0;
+	radius -= smoothstep(1.0, 1.4, time) * 7.0;
+	radius -= smoothstep(2.0, 2.4, time) * 7.0;
+	radius += smoothstep(3.6, 4.0, time) * 7.0;
+	radius += smoothstep(4.6, 5.0, time) * 7.0;
+	radius += smoothstep(5.6, 6.0, time) * 7.0;
+	
+	pos = gl_FragCoord.xy - iResolution.xy / 2.0;
+	pos += smoothstep(0.0, 1.0, time) * vec2(0.0, -20.0);
+	pos += smoothstep(1.0, 2.0, time) * vec2(-30.0, -20.0);
+	pos += smoothstep(2.0, 3.0, time) * vec2(30.0, -20.0);
+	pos += smoothstep(3.0, 4.0, time) * vec2(30.0, 20.0);
+	pos += smoothstep(4.0, 5.0, time) * vec2(-30.0, 20.0);
+	pos += smoothstep(5.0, 6.0, time) * vec2(0.0, 20.0);
+	c = min(c, smoothstep(radius - 2.0, radius, length(pos)));
+	
+	pos = gl_FragCoord.xy - iResolution.xy / 2.0;
+	pos += smoothstep(0.0, 1.0, time) * vec2(0.0, -20.0);
+	pos += smoothstep(1.0, 2.0, time) * vec2(30.0, 20.0);
+	pos += smoothstep(2.0, 3.0, time) * vec2(30.0, -20.0);
+	pos += smoothstep(3.0, 4.0, time) * vec2(-30.0, -20.0);
+	pos += smoothstep(4.0, 5.0, time) * vec2(-30.0, 20.0);
+	pos += smoothstep(5.0, 6.0, time) * vec2(0.0, 20.0);
+	c = min(c, smoothstep(radius - 2.0, radius, length(pos)));
+	
+	pos = gl_FragCoord.xy - iResolution.xy / 2.0;
+	pos += smoothstep(0.0, 1.0, time) * vec2(0.0, -20.0);
+	pos += smoothstep(1.0, 2.0, time) * vec2(30.0, 20.0);
+	pos += smoothstep(2.0, 3.0, time) * vec2(-30.0, 20.0);
+	pos += smoothstep(3.0, 4.0, time) * vec2(-30.0, -20.0);
+	pos += smoothstep(4.0, 5.0, time) * vec2(30.0, -20.0);
+	pos += smoothstep(5.0, 6.0, time) * vec2(0.0, 20.0);
+	c = min(c, smoothstep(radius - 2.0, radius, length(pos)));
+	
+	pos = gl_FragCoord.xy - iResolution.xy / 2.0;
+	pos += smoothstep(0.0, 1.0, time) * vec2(0.0, -20.0);
+	pos += smoothstep(1.0, 2.0, time) * vec2(-30.0, -20.0);
+	pos += smoothstep(2.0, 3.0, time) * vec2(-30.0, 20.0);
+	pos += smoothstep(3.0, 4.0, time) * vec2(30.0, 20.0);
+	pos += smoothstep(4.0, 5.0, time) * vec2(30.0, -20.0);
+	pos += smoothstep(5.0, 6.0, time) * vec2(0.0, 20.0);
+	c = min(c, smoothstep(radius - 2.0, radius, length(pos)));
+	
+
+	gl_FragColor=vec4(1.0-c, 0.0, 0.0, 1.0);
+}

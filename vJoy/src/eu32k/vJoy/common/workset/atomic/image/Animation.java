@@ -26,7 +26,7 @@ public class Animation extends ImageType {
    public Animation() {
       super("Animation");
       man = new AssetManager();
-      File path = new File("C:/setfos_ws/vJoy/vJoy-android/assets/textures/smoke");
+      File path = new File("D:/bt_sync/VJ/Clips/smoke");
       for (File file : path.listFiles()) {
          String s = "textures/smoke/" + file.getName();
          texturePaths.add(s);

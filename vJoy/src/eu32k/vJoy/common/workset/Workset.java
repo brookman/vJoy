@@ -12,7 +12,6 @@ import eu32k.vJoy.common.workset.atomic.bool.True;
 import eu32k.vJoy.common.workset.atomic.bool.Xor;
 import eu32k.vJoy.common.workset.atomic.image.AddAlpha;
 import eu32k.vJoy.common.workset.atomic.image.AddImages;
-import eu32k.vJoy.common.workset.atomic.image.Animation;
 import eu32k.vJoy.common.workset.atomic.image.BlackAndWhiteFilter;
 import eu32k.vJoy.common.workset.atomic.image.ColorShader;
 import eu32k.vJoy.common.workset.atomic.image.Filter;
@@ -78,7 +77,7 @@ public class Workset {
       TriTimer triTimer = new TriTimer();
       ContTimer contTimer = new ContTimer();
       TextureImage simpleImage = new TextureImage();
-      Animation animation = new Animation();
+      // Animation animation = new Animation();
       GenShader eyeShader = new GenShader();
       ColorShader colorShader = new ColorShader();
       HSVFilter hsvFilter = new HSVFilter();
@@ -101,7 +100,7 @@ public class Workset {
       types.add(triTimer);
       types.add(contTimer);
       types.add(simpleImage);
-      types.add(animation);
+      // types.add(animation);
       types.add(eyeShader);
       types.add(colorShader);
       types.add(hsvFilter);
@@ -125,7 +124,7 @@ public class Workset {
       numberTypes.add(contTimer);
 
       imageTypes.add(simpleImage);
-      imageTypes.add(animation);
+      // imageTypes.add(animation);
       imageTypes.add(eyeShader);
       imageTypes.add(colorShader);
       imageTypes.add(hsvFilter);
