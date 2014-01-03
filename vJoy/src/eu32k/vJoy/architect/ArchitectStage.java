@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -30,7 +28,8 @@ import eu32k.vJoy.net.ControllerValue;
 
 public class ArchitectStage extends Stage {
 
-   private ShapeRenderer rend;
+   // private ShapeRenderer rend;
+   private LineDrawer lineDrawer;
 
    private Workset workset = Workset.getInstance();
 
@@ -46,7 +45,8 @@ public class ArchitectStage extends Stage {
    public ArchitectStage(BroadcastAddress address) {
       net = new PeerToPeerClient(address, ClientTypes.TYPE_ARCHITECT);
 
-      rend = new ShapeRenderer();
+      // rend = new ShapeRenderer();
+      lineDrawer = new LineDrawer();
 
       Table table = new Table();
       table.setFillParent(true);
@@ -233,7 +233,7 @@ public class ArchitectStage extends Stage {
          }
          // ---------------------
 
-         rend.begin(ShapeType.Line);
+         // rend.begin(ShapeType.Line);
 
          // float pos = 0;
          // for (Port port : currentPatch.getPorts()) {
@@ -269,26 +269,32 @@ public class ArchitectStage extends Stage {
             view1.update();
 
             for (Port port : subType.getPorts()) {
-               rend.setColor(DataType.NORMAL_COLORS[port.getDataType()]);
+               // rend.setColor(DataType.NORMAL_COLORS[port.getDataType()]);
                Instance linkTo = instance.getPortMapping().get(port);
                if (linkTo != null) {
                   TypeView view2 = map.get(linkTo);
                   if (view2 != null) {
-                     rend.line(view1.getPortX(port), view1.getPortY(port), view2.getConnectorX(), view2.getConnectorY());
+                     lineDrawer.drawLineInterlolated(view1.getPortX(port), view1.getPortY(port), view2.getConnectorX(), view2.getConnectorY(), 1.5f, DataType.NORMAL_COLORS[port.getDataType()]);
+                     // rend.line(view1.getPortX(port), view1.getPortY(port), view2.getConnectorX(), view2.getConnectorY());
                   }
                }
 
                if (instance == selectedInstance && port == selectedPort) {
-                  rend.line(view1.getPortX(port), view1.getPortY(port), Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY());
+                  // rend.line(view1.getPortX(port), view1.getPortY(port), Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY());
+                  lineDrawer.drawLineInterlolated(view1.getPortX(port), view1.getPortY(port), Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY(), 1.5f,
+                        DataType.NORMAL_COLORS[port.getDataType()]);
                }
             }
             if (instance == workset.getExitInstance()) {
-               rend.setColor(DataType.NORMAL_COLORS[subType.getDataType()]);
-               rend.line(view1.getConnectorX(), view1.getConnectorY(), Gdx.graphics.getWidth(), Gdx.graphics.getHeight() / 2);
+               lineDrawer
+                     .drawLineInterlolated(view1.getConnectorX(), view1.getConnectorY(), Gdx.graphics.getWidth(), Gdx.graphics.getHeight() / 2, 1.5f, DataType.NORMAL_COLORS[subType.getDataType()]);
+
+               // rend.setColor(DataType.NORMAL_COLORS[subType.getDataType()]);
+               // rend.line(view1.getConnectorX(), view1.getConnectorY(), Gdx.graphics.getWidth(), Gdx.graphics.getHeight() / 2);
             }
 
          }
-         rend.end();
+         // rend.end();
          super.draw();
       }
    }
